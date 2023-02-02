@@ -28,7 +28,7 @@ const UserApprove = () => {
       name: 'Mr. Fredy',
     },
     {
-      no: 2,
+      no: 3,
       name: 'Mr. Justin',
     },
   ]

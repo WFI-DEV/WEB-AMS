@@ -17,19 +17,19 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
 
-const Damage = () => {
+const Detail = () => {
   const tableExample = [
     {
       no: 1,
-      name: 'Mr. Smith',
+      name: 'Used',
     },
     {
       no: 2,
-      name: 'Mr. Fredy',
+      name: 'Not Used',
     },
     {
       no: 2,
-      name: 'Mr. Justin',
+      name: 'Warehouse',
     },
   ]
   return (
@@ -37,11 +37,11 @@ const Damage = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>User Approve</CCardHeader>
+            <CCardHeader>Details</CCardHeader>
             <CCardBody>
               <CButton color="primary" className="mb-3 ">
                 <CIcon icon={cilPlus} className="me-2" />
-                New User Approve
+                New Details
               </CButton>
 
               {/* Table */}
@@ -50,7 +50,7 @@ const Damage = () => {
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">User Approve Name</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Details</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -91,4 +91,4 @@ const Damage = () => {
   )
 }
 
-export default Damage
+export default Detail

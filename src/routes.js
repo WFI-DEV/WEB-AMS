@@ -1,28 +1,34 @@
 import React from 'react'
 
-// Master Import
-const Dashboard = React.lazy(() => import('./views/pages/admin/Dashboard'))
-const Category = React.lazy(() => import('./views/pages/admin/Category'))
-const Branch = React.lazy(() => import('./views/pages/admin/Branch'))
-const Division = React.lazy(() => import('./views/pages/admin/Division'))
-const Vendor = React.lazy(() => import('./views/pages/admin/Vendor'))
-const Submission = React.lazy(() => import('./views/pages/admin/Submission'))
-const UserApprove = React.lazy(() => import('./views/pages/admin/UserApprove'))
-const Damage = React.lazy(() => import('./views/pages/admin/Damage'))
-const Detail = React.lazy(() => import('./views/pages/admin/Detail'))
+// Dasboard Admin Import
+const DashboardAdmin = React.lazy(() => import('./views/pages/admin/Dashboard'))
+
+// Assets Admin Import
+const AssetsAdmin = React.lazy(() => import('./views/pages/admin/assets/assets'))
+
+// Master Admin Import
+const CategoryMaster = React.lazy(() => import('./views/pages/admin/master/Category'))
+const BranchMaster = React.lazy(() => import('./views/pages/admin/master/Branch'))
+const DivisionMaster = React.lazy(() => import('./views/pages/admin/master/Division'))
+const VendorMaster = React.lazy(() => import('./views/pages/admin/master/Vendor'))
+const SubmissionMaster = React.lazy(() => import('./views/pages/admin/master/Submission'))
+const UserApproveMaster = React.lazy(() => import('./views/pages/admin/master/UserApprove'))
+const DamageMaster = React.lazy(() => import('./views/pages/admin/master/Damage'))
+const DetailMaster = React.lazy(() => import('./views/pages/admin/master/Detail'))
 
 // Routes Admin
 const routesAdmin = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/master/category', name: 'Category', element: Category },
-  { path: '/master/branch', name: 'Branch', element: Branch },
-  { path: '/master/division', name: 'Division', element: Division },
-  { path: '/master/vendor', name: 'Vendor', element: Vendor },
-  { path: '/master/submission', name: 'Submission', element: Submission },
-  { path: '/master/userapprove', name: 'UserApprove', element: UserApprove },
-  { path: '/master/damage', name: 'Damage', element: Damage },
-  { path: '/master/detail', name: 'Detail', element: Detail },
+  { path: '/dashboard', name: 'DashboardAdmin', element: DashboardAdmin },
+  { path: '/assets', name: 'AssetsAdmin', element: AssetsAdmin },
+  { path: '/master/category', name: 'CategoryMaster', element: CategoryMaster },
+  { path: '/master/branch', name: 'BranchMaster', element: BranchMaster },
+  { path: '/master/division', name: 'DivisionMaster', element: DivisionMaster },
+  { path: '/master/vendor', name: 'VendorMaster', element: VendorMaster },
+  { path: '/master/submission', name: 'SubmissionMaster', element: SubmissionMaster },
+  { path: '/master/userapprove', name: 'UserApproveMaster', element: UserApproveMaster },
+  { path: '/master/damage', name: 'DamageMaster', element: DamageMaster },
+  { path: '/master/detail', name: 'DetailMaster', element: DetailMaster },
 ]
 
 export default routesAdmin
