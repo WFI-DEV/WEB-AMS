@@ -1,6 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { cilMonitor, cilSpeedometer, cilStar, cilStorage } from '@coreui/icons'
+import { cilMonitor, cilSpeedometer, cilStorage } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
@@ -14,34 +14,34 @@ const _nav = [
       text: 'NEW',
     },
   },
-  {
-    component: CNavTitle,
-    name: 'Submissions',
-  },
-  {
-    component: CNavGroup,
-    name: 'All Submissions',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Category',
-        to: 'submissions/allasets/category',
-      },
-    ],
-  },
-  {
-    component: CNavGroup,
-    name: 'Branch Submissions',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Category',
-        to: 'submission/branchassets/category',
-      },
-    ],
-  },
+  // {
+  //   component: CNavTitle,
+  //   name: 'Submissions',
+  // },
+  // {
+  //   component: CNavGroup,
+  //   name: 'All Submissions',
+  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Category',
+  //       to: 'submissions/allasets/category',
+  //     },
+  //   ],
+  // },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Branch Submissions',
+  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Category',
+  //       to: 'submission/branchassets/category',
+  //     },
+  //   ],
+  // },
 
   {
     component: CNavTitle,
@@ -88,6 +88,11 @@ const _nav = [
       },
       {
         component: CNavItem,
+        name: 'Detail',
+        to: 'master/detail',
+      },
+      {
+        component: CNavItem,
         name: 'Submission',
         to: 'master/submission',
       },
@@ -100,11 +105,6 @@ const _nav = [
         component: CNavItem,
         name: 'Damage',
         to: 'master/damage',
-      },
-      {
-        component: CNavItem,
-        name: 'Detail',
-        to: 'master/detail',
       },
     ],
   },

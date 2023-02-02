@@ -8,6 +8,7 @@ import {
   CContainer,
   CModal,
   CModalBody,
+  CModalFooter,
   CModalHeader,
   CModalTitle,
   CRow,
@@ -22,6 +23,7 @@ import CIcon from '@coreui/icons-react'
 import { cilFindInPage, cilPencil, cilPlus, cilQrCode, cilTrash } from '@coreui/icons'
 
 const Assets = () => {
+  const [modalNewAsset, setModalNewAsset] = useState(false)
   const [modalDetail, setModalDetail] = useState(false)
   return (
     <>
@@ -30,7 +32,11 @@ const Assets = () => {
           <CCard className="mb-4">
             <CCardHeader>Assets</CCardHeader>
             <CCardBody>
-              <CButton color="primary" className="mb-3 ">
+              <CButton
+                color="primary"
+                className="mb-3 "
+                onClick={() => setModalNewAsset(!modalNewAsset)}
+              >
                 <CIcon icon={cilPlus} className="me-2" />
                 New Asset by Admin
               </CButton>
@@ -91,7 +97,32 @@ const Assets = () => {
         </CCol>
       </CRow>
 
-      {/* MODAL DETAIL ASSET */}
+      {/* ###################################-  MODAL -############################################## */}
+
+      {/* ###########- MODAL + NEW ASSET by ADMIN -##########*/}
+
+      <CModal
+        size="xl"
+        backdrop="static"
+        visible={modalNewAsset}
+        onClose={() => setModalNewAsset(false)}
+      >
+        <CModalHeader>
+          <CModalTitle>
+            <CIcon icon={cilPlus} className="me-2" />
+            New Asset by Admin
+          </CModalTitle>
+        </CModalHeader>
+        <CModalBody>........</CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setModalNewAsset(false)}>
+            Close
+          </CButton>
+          <CButton color="primary">Create Asset</CButton>
+        </CModalFooter>
+      </CModal>
+
+      {/* ###########- MODAL DETAIL ASSET -##########*/}
       <CModal fullscreen visible={modalDetail} onClose={() => setModalDetail(false)}>
         <CModalHeader>
           <CModalTitle>Details Assets</CModalTitle>
@@ -175,17 +206,19 @@ const Assets = () => {
 
                     {/* Actions */}
                     <CTableDataCell className="text-center">
-                      <CButton color="danger" size="sm" className="me-1">
-                        <CIcon icon={cilTrash} />
-                      </CButton>
+                      <CContainer>
+                        <CButton color="danger" size="sm" className="me-1 text-light">
+                          <CIcon icon={cilTrash} />
+                        </CButton>
 
-                      <CButton color="info" size="sm" className="me-1">
-                        <CIcon icon={cilPencil} />
-                      </CButton>
+                        <CButton color="info" size="sm" className="me-1 text-light">
+                          <CIcon icon={cilPencil} />
+                        </CButton>
 
-                      <CButton color="info" size="sm">
-                        <CIcon icon={cilQrCode} />
-                      </CButton>
+                        <CButton color="info" size="sm" className="me-1 text-light">
+                          <CIcon icon={cilQrCode} />
+                        </CButton>
+                      </CContainer>
                     </CTableDataCell>
                   </CTableRow>
                 </CTableBody>

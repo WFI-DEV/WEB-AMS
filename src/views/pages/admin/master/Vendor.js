@@ -71,11 +71,11 @@ const Vendor = () => {
 
                       {/* Actions */}
                       <CTableDataCell className="text-center">
-                        <CButton color="danger" size="sm" className="me-1">
+                        <CButton color="danger" size="sm" className="me-1 text-light">
                           <CIcon icon={cilTrash} />
                         </CButton>
 
-                        <CButton color="info" size="sm">
+                        <CButton color="info" size="sm" className="text-light">
                           <CIcon icon={cilPencil} />
                         </CButton>
                       </CTableDataCell>
