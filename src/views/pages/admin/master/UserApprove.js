@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
   CButton,
@@ -6,6 +6,8 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
+  CContainer,
+  CFormInput,
   CRow,
   CTable,
   CTableBody,
@@ -32,6 +34,9 @@ const UserApprove = () => {
       name: 'Mr. Justin',
     },
   ]
+
+  const [newButton, setNewButton] = useState(true)
+
   return (
     <>
       <CRow>
@@ -39,10 +44,36 @@ const UserApprove = () => {
           <CCard className="mb-4">
             <CCardHeader>User Approve</CCardHeader>
             <CCardBody>
-              <CButton color="primary" className="mb-3 ">
-                <CIcon icon={cilPlus} className="me-2" />
-                New User Approve
-              </CButton>
+              {/* + NEW  */}
+              {newButton ? (
+                <CButton color="primary" className="mb-3 " onClick={() => setNewButton(!newButton)}>
+                  <CIcon icon={cilPlus} className="me-2" />
+                  New User Approve
+                </CButton>
+              ) : (
+                <CContainer>
+                  <CCol md={3} className="mb-2 fw-bold">
+                    <CFormInput
+                      id="inputYears"
+                      label=" Create New User Approve"
+                      placeholder="Text Here..."
+                    />
+                  </CCol>
+
+                  <CButton type="submit" className="mb-3 me-2 ">
+                    Add
+                  </CButton>
+
+                  <CButton
+                    type="submit"
+                    className="mb-3 text-light"
+                    color="danger"
+                    onClick={() => setNewButton(!newButton)}
+                  >
+                    Cancel
+                  </CButton>
+                </CContainer>
+              )}
 
               {/* Table */}
               <CTable align="middle" className="mb-0 border" striped>
@@ -64,7 +95,7 @@ const UserApprove = () => {
                         <div>{item.no}.</div>
                       </CTableDataCell>
 
-                      {/* Category */}
+                      {/* User Approve */}
                       <CTableDataCell className="text-center">
                         <div>{item.name}</div>
                       </CTableDataCell>

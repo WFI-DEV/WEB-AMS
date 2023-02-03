@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
   CButton,
@@ -6,6 +6,8 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
+  CContainer,
+  CFormInput,
   CRow,
   CTable,
   CTableBody,
@@ -28,6 +30,9 @@ const Submission = () => {
       name: 'Repair',
     },
   ]
+
+  const [newButton, setNewButton] = useState(true)
+
   return (
     <>
       <CRow>
@@ -35,10 +40,36 @@ const Submission = () => {
           <CCard className="mb-4">
             <CCardHeader>Submission</CCardHeader>
             <CCardBody>
-              <CButton color="primary" className="mb-3 ">
-                <CIcon icon={cilPlus} className="me-2" />
-                New Submission
-              </CButton>
+              {/* + NEW  */}
+              {newButton ? (
+                <CButton color="primary" className="mb-3 " onClick={() => setNewButton(!newButton)}>
+                  <CIcon icon={cilPlus} className="me-2" />
+                  New Submission
+                </CButton>
+              ) : (
+                <CContainer>
+                  <CCol md={3} className="mb-2 fw-bold">
+                    <CFormInput
+                      id="inputYears"
+                      label=" Create New Submission"
+                      placeholder="Text Here..."
+                    />
+                  </CCol>
+
+                  <CButton type="submit" className="mb-3 me-2 ">
+                    Add
+                  </CButton>
+
+                  <CButton
+                    type="submit"
+                    className="mb-3 text-light"
+                    color="danger"
+                    onClick={() => setNewButton(!newButton)}
+                  >
+                    Cancel
+                  </CButton>
+                </CContainer>
+              )}
 
               {/* Table */}
               <CTable align="middle" className="mb-0 border" striped>
@@ -60,7 +91,7 @@ const Submission = () => {
                         <div>{item.no}.</div>
                       </CTableDataCell>
 
-                      {/* Category */}
+                      {/* Submission */}
                       <CTableDataCell className="text-center">
                         <div>{item.name}</div>
                       </CTableDataCell>
