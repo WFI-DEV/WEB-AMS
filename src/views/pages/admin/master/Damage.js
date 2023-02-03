@@ -38,7 +38,7 @@ const Damage = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Damage</CCardHeader>
+            <CCardHeader className="fw-bold">Damage</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (

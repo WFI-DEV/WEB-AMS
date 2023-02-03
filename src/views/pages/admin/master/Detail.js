@@ -42,7 +42,7 @@ const Detail = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Details</CCardHeader>
+            <CCardHeader className="fw-bold">Details</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (

@@ -35,7 +35,7 @@ const Assets = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Assets</CCardHeader>
+            <CCardHeader className="fw-bold">Assets</CCardHeader>
             <CCardBody>
               <CButton
                 color="primary"
@@ -125,7 +125,7 @@ const Assets = () => {
           {/* Form */}
           <CForm className="row g-3">
             {/* Category */}
-            <CCol md={6}>
+            <CCol md={6} className="fw-bold">
               <CFormSelect label="Category">
                 <option hidden>Choose...</option>
                 <option value="1">CPU</option>
@@ -135,12 +135,12 @@ const Assets = () => {
             </CCol>
 
             {/* Brand */}
-            <CCol md={6}>
+            <CCol md={6} className="fw-bold">
               <CFormInput id="inputBrand" label="Brand" placeholder="Example: Samsung A1234" />
             </CCol>
 
             {/* Code */}
-            <CCol md={6}>
+            <CCol md={6} className="fw-bold">
               <CFormInput
                 id="inputCode"
                 label="Code Asset"
@@ -149,28 +149,21 @@ const Assets = () => {
             </CCol>
 
             {/* Invoice */}
-            <CCol md={6}>
+            <CCol md={6} className="fw-bold">
               <CFormInput
                 id="inputInvoice"
                 label="No. Invoice"
                 placeholder="Example: INV/JAN/001/010/2022/BPF"
               />
             </CCol>
-            <CCol xs={12}>
-              <CFormInput
-                id="inputAddress2"
-                label="Address 2"
-                placeholder="Apartment, studio, or floor"
-              />
-            </CCol>
 
             {/* Years */}
-            <CCol md={3}>
+            <CCol md={3} className="fw-bold">
               <CFormInput id="inputYears" label="Year Purchase" />
             </CCol>
 
             {/* Detail */}
-            <CCol md={3}>
+            <CCol md={3} className="fw-bold">
               <CFormSelect label="Detail">
                 <option hidden>Choose...</option>
                 <option value="Jakarta">Used</option>
@@ -181,7 +174,7 @@ const Assets = () => {
 
             {/* Condition */}
             <CCol md={2}>
-              <CFormLabel>Condition</CFormLabel>
+              <CFormLabel className="fw-bold">Condition</CFormLabel>
               <br />
 
               <CFormCheck
@@ -206,7 +199,7 @@ const Assets = () => {
             </CCol>
 
             {/* No Submission */}
-            <CCol md={4}>
+            <CCol md={4} className="fw-bold">
               <CFormInput
                 id="inputYears"
                 label="No. Submission"
@@ -216,7 +209,7 @@ const Assets = () => {
             </CCol>
 
             {/* Vendor */}
-            <CCol md={3}>
+            <CCol md={3} className="fw-bold">
               <CFormSelect label="Vendor">
                 <option hidden>Choose...</option>
                 <option value="Jakarta">Vendor 1</option>
@@ -226,7 +219,7 @@ const Assets = () => {
             </CCol>
 
             {/* Branch */}
-            <CCol md={3}>
+            <CCol md={3} className="fw-bold">
               <CFormSelect label="Branch">
                 <option hidden>Choose...</option>
                 <option value="Jakarta">Jakarta</option>
@@ -236,7 +229,7 @@ const Assets = () => {
             </CCol>
 
             {/* Division */}
-            <CCol md={3}>
+            <CCol md={3} className="fw-bold">
               <CFormSelect id="inputState" label="Divison">
                 <option hidden>Choose...</option>
                 <option>Marketing</option>
@@ -246,7 +239,7 @@ const Assets = () => {
             </CCol>
 
             {/* User */}
-            <CCol md={3}>
+            <CCol md={3} className="fw-bold">
               <CFormInput id="inputUser" label="User" />
             </CCol>
           </CForm>

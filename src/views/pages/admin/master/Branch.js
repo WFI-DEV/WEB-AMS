@@ -42,7 +42,7 @@ const Branch = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Branch</CCardHeader>
+            <CCardHeader className="fw-bold">Branch</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (

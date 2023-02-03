@@ -38,7 +38,7 @@ const Submission = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Submission</CCardHeader>
+            <CCardHeader className="fw-bold">Submission</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (

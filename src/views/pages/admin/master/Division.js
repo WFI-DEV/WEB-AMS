@@ -42,7 +42,7 @@ const Division = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Division</CCardHeader>
+            <CCardHeader className="fw-bold">Division</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (

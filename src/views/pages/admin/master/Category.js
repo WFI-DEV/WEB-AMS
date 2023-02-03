@@ -42,7 +42,7 @@ const Category = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Category</CCardHeader>
+            <CCardHeader className="fw-bold">Category</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (

@@ -42,7 +42,7 @@ const UserApprove = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>User Approve</CCardHeader>
+            <CCardHeader className="fw-bold">User Approve</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (

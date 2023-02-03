@@ -42,7 +42,7 @@ const Vendor = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Vendor</CCardHeader>
+            <CCardHeader className="fw-bold">Vendor</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (
