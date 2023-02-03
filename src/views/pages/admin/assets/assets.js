@@ -6,6 +6,11 @@ import {
   CCardHeader,
   CCol,
   CContainer,
+  CForm,
+  CFormCheck,
+  CFormInput,
+  CFormLabel,
+  CFormSelect,
   CModal,
   CModalBody,
   CModalFooter,
@@ -97,9 +102,11 @@ const Assets = () => {
         </CCol>
       </CRow>
 
+      {/* ###################################-  End -############################################## */}
+
       {/* ###################################-  MODAL -############################################## */}
 
-      {/* ###########- MODAL + NEW ASSET by ADMIN -##########*/}
+      {/* ###################################-  MODAL + NEW ASSET by ADMIN -############################################## */}
 
       <CModal
         size="xl"
@@ -113,7 +120,137 @@ const Assets = () => {
             New Asset by Admin
           </CModalTitle>
         </CModalHeader>
-        <CModalBody>........</CModalBody>
+        {/* Modal Body */}
+        <CModalBody>
+          {/* Form */}
+          <CForm className="row g-3">
+            {/* Category */}
+            <CCol md={6}>
+              <CFormSelect label="Category">
+                <option hidden>Choose...</option>
+                <option value="1">CPU</option>
+                <option value="2">Printer</option>
+                <option value="3">Monitor</option>
+              </CFormSelect>
+            </CCol>
+
+            {/* Brand */}
+            <CCol md={6}>
+              <CFormInput id="inputBrand" label="Brand" placeholder="Example: Samsung A1234" />
+            </CCol>
+
+            {/* Code */}
+            <CCol md={6}>
+              <CFormInput
+                id="inputCode"
+                label="Code Asset"
+                placeholder="Example: MNT/IT/001/ADM/AMB/BPF"
+              />
+            </CCol>
+
+            {/* Invoice */}
+            <CCol md={6}>
+              <CFormInput
+                id="inputInvoice"
+                label="No. Invoice"
+                placeholder="Example: INV/JAN/001/010/2022/BPF"
+              />
+            </CCol>
+            <CCol xs={12}>
+              <CFormInput
+                id="inputAddress2"
+                label="Address 2"
+                placeholder="Apartment, studio, or floor"
+              />
+            </CCol>
+
+            {/* Years */}
+            <CCol md={3}>
+              <CFormInput id="inputYears" label="Year Purchase" />
+            </CCol>
+
+            {/* Detail */}
+            <CCol md={3}>
+              <CFormSelect label="Detail">
+                <option hidden>Choose...</option>
+                <option value="Jakarta">Used</option>
+                <option value="Surabaya">Unused</option>
+                <option value="Bandung">Warehouse</option>
+              </CFormSelect>
+            </CCol>
+
+            {/* Condition */}
+            <CCol md={2}>
+              <CFormLabel>Condition</CFormLabel>
+              <br />
+
+              <CFormCheck
+                className="py-2 me-4 text-success"
+                inline
+                type="radio"
+                name="inlineRadioOptions"
+                id="inlineCheckbox1"
+                value="option1"
+                label="Good"
+              />
+
+              <CFormCheck
+                className="text-danger"
+                inline
+                type="radio"
+                name="inlineRadioOptions"
+                id="inlineCheckbox2"
+                value="option2"
+                label="Broke"
+              />
+            </CCol>
+
+            {/* No Submission */}
+            <CCol md={4}>
+              <CFormInput
+                id="inputYears"
+                label="No. Submission"
+                disabled
+                placeholder="Input by: Admin"
+              />
+            </CCol>
+
+            {/* Vendor */}
+            <CCol md={3}>
+              <CFormSelect label="Vendor">
+                <option hidden>Choose...</option>
+                <option value="Jakarta">Vendor 1</option>
+                <option value="Surabaya">Vendor 2</option>
+                <option value="Bandung">Vendor 3</option>
+              </CFormSelect>
+            </CCol>
+
+            {/* Branch */}
+            <CCol md={3}>
+              <CFormSelect label="Branch">
+                <option hidden>Choose...</option>
+                <option value="Jakarta">Jakarta</option>
+                <option value="Surabaya">Surabaya</option>
+                <option value="Bandung">Bandung</option>
+              </CFormSelect>
+            </CCol>
+
+            {/* Division */}
+            <CCol md={3}>
+              <CFormSelect id="inputState" label="Divison">
+                <option hidden>Choose...</option>
+                <option>Marketing</option>
+                <option>HRD</option>
+                <option>Finance</option>
+              </CFormSelect>
+            </CCol>
+
+            {/* User */}
+            <CCol md={3}>
+              <CFormInput id="inputUser" label="User" />
+            </CCol>
+          </CForm>
+        </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setModalNewAsset(false)}>
             Close
@@ -122,7 +259,8 @@ const Assets = () => {
         </CModalFooter>
       </CModal>
 
-      {/* ###########- MODAL DETAIL ASSET -##########*/}
+      {/* ###################################-  MODAL DETAIL ASSET -############################################## */}
+
       <CModal fullscreen visible={modalDetail} onClose={() => setModalDetail(false)}>
         <CModalHeader>
           <CModalTitle>Details Assets</CModalTitle>
