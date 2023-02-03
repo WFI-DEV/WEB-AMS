@@ -9,7 +9,7 @@ const loading = (
 )
 
 // Layout
-const MasterLayout = React.lazy(() => import('./layout/MasterLayout'))
+const AdminLayout = React.lazy(() => import('./layout/AdminLayout'))
 
 // Pages
 const Login = React.lazy(() => import('./views/pages/login/Login'))
@@ -21,7 +21,7 @@ class App extends Component {
         <Suspense fallback={loading}>
           <Routes>
             <Route exact path="/" name="Login Page" element={<Login />} />
-            <Route path="admin/*" name="Home" element={<MasterLayout />} />
+            <Route path="admin/*" name="Home" element={<AdminLayout />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
