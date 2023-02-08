@@ -1,4 +1,4 @@
-### WEB-INVENTARIS-WFI
+### WEB-AMS-WFI
 
 npm i / npm install pertama kali clone
 

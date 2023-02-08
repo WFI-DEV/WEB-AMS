@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Swal from 'sweetalert2'
 
 import {
   CButton,
@@ -8,6 +9,11 @@ import {
   CCol,
   CContainer,
   CFormInput,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
   CRow,
   CTable,
   CTableBody,
@@ -18,25 +24,45 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
+import { getAllData, deleteData, addData, getDataById, updateData } from 'src/axios/axiosVendor'
 
 const Vendor = () => {
-  const tableExample = [
-    {
-      no: 1,
-      name: 'Vendor 1',
-    },
-    {
-      no: 2,
-      name: 'Vendor 2',
-    },
-    {
-      no: 3,
-      name: 'Vendor 3',
-    },
-  ]
+  // Get All Data
+  const [vendor, setVendor] = useState([])
+  useEffect(() => {
+    getAllData((res) => setVendor(res))
+  }, [])
 
+  // Add Data
+  const [formAdd, setFormAdd] = useState({
+    name: '',
+  })
+  // Button Submit Add Data
+  const submitAdd = () => {
+    addData(formAdd)
+  }
+
+  // Edit Data
+  // Id Edit
+  const [dataId, setDataId] = useState()
+  // Form Edit
+  const [formEdit, setFormEdit] = useState({})
+  const btnEdit = (id) => {
+    getDataById(id, (res) => {
+      setDataId(id)
+      setFormEdit({ name: res.name })
+    })
+  }
+  // console.log(formEdit)
+
+  const submitEdit = () => {
+    updateData(dataId, formEdit)
+  }
+
+  // Button Open Input New Data
   const [newButton, setNewButton] = useState(true)
-
+  // Button Open Modal Edit Data
+  const [editButton, setEditButton] = useState(false)
   return (
     <>
       <CRow>
@@ -57,10 +83,11 @@ const Vendor = () => {
                       id="inputYears"
                       label=" Create New Vendor"
                       placeholder="Text Here..."
+                      onChange={(e) => setFormAdd({ ...formAdd, name: e.target.value })}
                     />
                   </CCol>
 
-                  <CButton type="submit" className="mb-3 me-2 ">
+                  <CButton type="submit" className="mb-3 me-2 " onClick={() => submitAdd()}>
                     Add
                   </CButton>
 
@@ -88,11 +115,11 @@ const Vendor = () => {
 
                 {/* Table Body */}
                 <CTableBody>
-                  {tableExample.map((item, index) => (
+                  {vendor.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       {/* No */}
                       <CTableDataCell className="text-start">
-                        <div>{item.no}.</div>
+                        <div>{index + 1}.</div>
                       </CTableDataCell>
 
                       {/* Name */}
@@ -102,11 +129,36 @@ const Vendor = () => {
 
                       {/* Actions */}
                       <CTableDataCell className="text-center">
-                        <CButton color="danger" size="sm" className="me-1 text-light">
+                        <CButton
+                          color="danger"
+                          size="sm"
+                          className="me-1 text-light"
+                          onClick={() =>
+                            Swal.fire({
+                              title: 'Are you sure?',
+                              text: "You won't be able to delete this!",
+                              icon: 'warning',
+                              showCancelButton: true,
+                              confirmButtonColor: '#3085d6',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Yes, delete it!',
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                // delete from axios
+                                deleteData(item.id)
+                              }
+                            })
+                          }
+                        >
                           <CIcon icon={cilTrash} />
                         </CButton>
 
-                        <CButton color="info" size="sm" className="text-light">
+                        <CButton
+                          color="info"
+                          size="sm"
+                          className="text-light"
+                          onClick={() => (setEditButton(!editButton), btnEdit(item.id))}
+                        >
                           <CIcon icon={cilPencil} />
                         </CButton>
                       </CTableDataCell>
@@ -118,6 +170,36 @@ const Vendor = () => {
           </CCard>
         </CCol>
       </CRow>
+
+      {/* ##########---------- MODAL ----------########## */}
+      {/* ##########---------- EDIT MODAL ----------########## */}
+      <CModal
+        alignment="center"
+        visible={editButton}
+        backdrop="static"
+        onClose={() => setEditButton(false)}
+      >
+        <CModalHeader>
+          <CModalTitle>Edit Vendor Name</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CFormInput
+            type="text"
+            id="inputEditVendor"
+            className="form-control"
+            value={formEdit.name}
+            onChange={(e) => setFormEdit({ name: e.target.value })}
+          />
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setEditButton(false)}>
+            Close
+          </CButton>
+          <CButton color="primary" onClick={() => submitEdit()}>
+            Save changes
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </>
   )
 }

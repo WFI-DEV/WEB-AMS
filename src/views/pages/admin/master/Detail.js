@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Swal from 'sweetalert2'
 
 import {
   CButton,
@@ -8,6 +9,11 @@ import {
   CCol,
   CContainer,
   CFormInput,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
   CRow,
   CTable,
   CTableBody,
@@ -18,24 +24,45 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
+import { getAllData, deleteData, addData, getDataById, updateData } from 'src/axios/axiosDetail'
 
 const Detail = () => {
-  const tableExample = [
-    {
-      no: 1,
-      name: 'Used',
-    },
-    {
-      no: 2,
-      name: 'Not Used',
-    },
-    {
-      no: 2,
-      name: 'Warehouse',
-    },
-  ]
+  // Get All Data
+  const [detail, setDetail] = useState([])
+  useEffect(() => {
+    getAllData((res) => setDetail(res))
+  }, [])
 
+  // Add Data
+  const [formAdd, setFormAdd] = useState({
+    name: '',
+  })
+  // Button Submit Add Data
+  const submitAdd = () => {
+    addData(formAdd)
+  }
+
+  // Edit Data
+  // Id Edit
+  const [dataId, setDataId] = useState()
+  // Form Edit
+  const [formEdit, setFormEdit] = useState({})
+  const btnEdit = (id) => {
+    getDataById(id, (res) => {
+      setDataId(id)
+      setFormEdit({ name: res.name })
+    })
+  }
+  // console.log(formEdit)
+
+  const submitEdit = () => {
+    updateData(dataId, formEdit)
+  }
+
+  // Button Open Input New Data
   const [newButton, setNewButton] = useState(true)
+  // Button Open Modal Edit Data
+  const [editButton, setEditButton] = useState(false)
 
   return (
     <>
@@ -57,10 +84,11 @@ const Detail = () => {
                       id="inputYears"
                       label=" Create New Detail"
                       placeholder="Text Here..."
+                      onChange={(e) => setFormAdd({ ...formAdd, name: e.target.value })}
                     />
                   </CCol>
 
-                  <CButton type="submit" className="mb-3 me-2 ">
+                  <CButton type="submit" className="mb-3 me-2 " onClick={() => submitAdd()}>
                     Add
                   </CButton>
 
@@ -81,18 +109,18 @@ const Detail = () => {
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Details</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Detail Name</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
 
                 {/* Table Body */}
                 <CTableBody>
-                  {tableExample.map((item, index) => (
+                  {detail.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       {/* No */}
                       <CTableDataCell className="text-start">
-                        <div>{item.no}.</div>
+                        <div>{index + 1}.</div>
                       </CTableDataCell>
 
                       {/* Detail */}
@@ -102,11 +130,36 @@ const Detail = () => {
 
                       {/* Actions */}
                       <CTableDataCell className="text-center">
-                        <CButton color="danger" size="sm" className="me-1 text-light">
+                        <CButton
+                          color="danger"
+                          size="sm"
+                          className="me-1 text-light"
+                          onClick={() =>
+                            Swal.fire({
+                              title: 'Are you sure?',
+                              text: "You won't be able to delete this!",
+                              icon: 'warning',
+                              showCancelButton: true,
+                              confirmButtonColor: '#3085d6',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Yes, delete it!',
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                // delete from axios
+                                deleteData(item.id)
+                              }
+                            })
+                          }
+                        >
                           <CIcon icon={cilTrash} />
                         </CButton>
 
-                        <CButton color="info" size="sm" className="text-light">
+                        <CButton
+                          color="info"
+                          size="sm"
+                          className="text-light"
+                          onClick={(() => setEditButton(!editButton), btnEdit(item.id))}
+                        >
                           <CIcon icon={cilPencil} />
                         </CButton>
                       </CTableDataCell>
@@ -118,6 +171,36 @@ const Detail = () => {
           </CCard>
         </CCol>
       </CRow>
+
+      {/* ##########---------- MODAL ----------########## */}
+      {/* ##########---------- EDIT MODAL ----------########## */}
+      <CModal
+        alignment="center"
+        visible={editButton}
+        backdrop="static"
+        onClose={() => setEditButton(false)}
+      >
+        <CModalHeader>
+          <CModalTitle>Edit Detail Name</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CFormInput
+            type="text"
+            id="inputEditDetail"
+            className="form-control"
+            value={formEdit.name}
+            onChange={(e) => setFormEdit({ name: e.target.value })}
+          />
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setEditButton(false)}>
+            Close
+          </CButton>
+          <CButton color="primary" onClick={() => submitEdit()}>
+            Save changes
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </>
   )
 }
