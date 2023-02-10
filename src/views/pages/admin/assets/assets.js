@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CBadge,
   CButton,
@@ -20,8 +20,6 @@ import {
   CFormSelect,
   CInputGroup,
   CInputGroupText,
-  CListGroup,
-  CListGroupItem,
   CModal,
   CModalBody,
   CModalFooter,
@@ -37,11 +35,52 @@ import {
   CTooltip,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilFilter, cilPencil, cilPlus, cilQrCode, cilTrash } from '@coreui/icons'
+import DatePicker from 'react-datepicker'
 
-const Assets2 = () => {
+import 'react-datepicker/dist/react-datepicker.css'
+import { getAllCategory } from 'src/axios/axiosCategory'
+import { getAllDetail } from 'src/axios/axiosDetail'
+import { getAllBranch } from 'src/axios/axiosBranch'
+import { getAllVendor } from 'src/axios/axiosVendor'
+import { getAllDivision } from 'src/axios/axiosDivision'
+
+import { cilCalendar, cilFilter, cilPencil, cilPlus, cilQrCode, cilTrash } from '@coreui/icons'
+
+const Assets = () => {
+  // Get Category Data
+  const [category, setCategory] = useState([])
+  useEffect(() => {
+    getAllCategory((res) => setCategory(res))
+  }, [])
   const [modalNewAsset, setModalNewAsset] = useState(false)
-  const [modalDetail, setModalDetail] = useState(false)
+
+  // Get Detail Data
+  const [detail, setDetail] = useState([])
+  useEffect(() => {
+    getAllDetail((res) => setDetail(res))
+  }, [])
+
+  // Get Branch Data
+  const [branch, setBranch] = useState([])
+  useEffect(() => {
+    getAllBranch((res) => setBranch(res))
+  }, [])
+
+  // Get All Vendor
+  const [vendor, setVendor] = useState([])
+  useEffect(() => {
+    getAllVendor((res) => setVendor(res))
+  }, [])
+
+  // Get All Division
+  const [division, setDivision] = useState([])
+  useEffect(() => {
+    getAllDivision((res) => setDivision(res))
+  }, [])
+
+  // Date Picker
+  const [startDate, setStartDate] = useState(new Date())
+
   return (
     <>
       <CRow>
@@ -261,9 +300,11 @@ const Assets2 = () => {
             <CCol md={6} className="fw-bold">
               <CFormSelect label="Category">
                 <option hidden>Choose...</option>
-                <option value="1">CPU</option>
-                <option value="2">Printer</option>
-                <option value="3">Monitor</option>
+                {category.map((item, index) => (
+                  <option key={item.name} value={index}>
+                    {item.name}
+                  </option>
+                ))}
               </CFormSelect>
             </CCol>
 
@@ -272,36 +313,37 @@ const Assets2 = () => {
               <CFormInput id="inputBrand" label="Brand" placeholder="Example: Samsung A1234" />
             </CCol>
 
-            {/* Code */}
-            <CCol md={6} className="fw-bold">
-              <CFormInput
-                id="inputCode"
-                label="Code Asset"
-                placeholder="Example: MNT/IT/001/ADM/AMB/BPF"
-              />
-            </CCol>
-
-            {/* Invoice */}
-            <CCol md={6} className="fw-bold">
-              <CFormInput
-                id="inputInvoice"
-                label="No. Invoice"
-                placeholder="Example: INV/JAN/001/010/2022/BPF"
-              />
-            </CCol>
-
             {/* Years */}
             <CCol md={3} className="fw-bold">
-              <CFormInput id="inputYears" label="Year Purchase" />
+              <CFormLabel>Years Purchase</CFormLabel>
+              <div className="input-group">
+                <span className="input-group-text" id="basic-addon1">
+                  <CIcon icon={cilCalendar} />
+                </span>
+                <span>
+                  <DatePicker
+                    dateFormat="dd/MM/yyyy"
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    className="input-group-text bg-white text-start"
+                  />
+                </span>
+              </div>
             </CCol>
 
             {/* Detail */}
             <CCol md={3} className="fw-bold">
               <CFormSelect label="Detail">
                 <option hidden>Choose...</option>
-                <option value="Jakarta">Used</option>
-                <option value="Surabaya">Unused</option>
-                <option value="Bandung">Warehouse</option>
+                {detail.map((item, index) => (
+                  <option key={item.name} value={index}>
+                    {item.name}
+                  </option>
+                ))}
               </CFormSelect>
             </CCol>
 
@@ -345,9 +387,12 @@ const Assets2 = () => {
             <CCol md={3} className="fw-bold">
               <CFormSelect label="Vendor">
                 <option hidden>Choose...</option>
-                <option value="Jakarta">Vendor 1</option>
-                <option value="Surabaya">Vendor 2</option>
-                <option value="Bandung">Vendor 3</option>
+
+                {vendor.map((item, index) => (
+                  <option key={item.name} value={index}>
+                    {item.name}
+                  </option>
+                ))}
               </CFormSelect>
             </CCol>
 
@@ -355,9 +400,11 @@ const Assets2 = () => {
             <CCol md={3} className="fw-bold">
               <CFormSelect label="Branch">
                 <option hidden>Choose...</option>
-                <option value="Jakarta">Jakarta</option>
-                <option value="Surabaya">Surabaya</option>
-                <option value="Bandung">Bandung</option>
+                {branch.map((item, index) => (
+                  <option key={item.BranchName} value={index}>
+                    {item.BranchName}
+                  </option>
+                ))}
               </CFormSelect>
             </CCol>
 
@@ -365,15 +412,32 @@ const Assets2 = () => {
             <CCol md={3} className="fw-bold">
               <CFormSelect id="inputState" label="Divison">
                 <option hidden>Choose...</option>
-                <option>Marketing</option>
-                <option>HRD</option>
-                <option>Finance</option>
+                {division.map((item, index) => (
+                  <option key={item.name} value={index}>
+                    {item.name}
+                  </option>
+                ))}
               </CFormSelect>
             </CCol>
 
             {/* User */}
             <CCol md={3} className="fw-bold">
-              <CFormInput id="inputUser" label="User" />
+              <CFormInput placeholder="Example: Mr. Jhon" id="inputUser" label="User" />
+            </CCol>
+
+            {/* Code Asset*/}
+            <CCol md={6} className="fw-bold ">
+              <CFormInput
+                id="inputCode"
+                label="Code Asset"
+                placeholder="001/MNT/AMB/I/23"
+                disabled
+              />
+            </CCol>
+
+            {/* Invoice */}
+            <CCol md={6} className="fw-bold">
+              <CFormInput id="inputInvoice" label="No. Invoice" placeholder="Text Here..." />
             </CCol>
           </CForm>
         </CModalBody>
@@ -384,24 +448,8 @@ const Assets2 = () => {
           <CButton color="primary">Create Asset</CButton>
         </CModalFooter>
       </CModal>
-
-      {/* ###################################-  MODAL DETAIL ASSET -############################################## */}
-
-      <CModal fullscreen visible={modalDetail} onClose={() => setModalDetail(false)}>
-        <CModalHeader>
-          <CModalTitle>Details Assets</CModalTitle>
-        </CModalHeader>
-
-        {/* ISI MODAL ASSET */}
-        <CModalBody>
-          <CCard>
-            <CCardHeader>Monitor</CCardHeader>
-            <CCardBody></CCardBody>
-          </CCard>
-        </CModalBody>
-      </CModal>
     </>
   )
 }
 
-export default Assets2
+export default Assets

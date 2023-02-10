@@ -4,7 +4,7 @@ import Swal from 'sweetalert2'
 const baseUrl = 'http://localhost:4409'
 const URL = `${baseUrl}/admin/master/division`
 
-const getAllData = async (callback) => {
+const getAllDivision = async (callback) => {
   try {
     let allData = await axios({
       method: 'GET',
@@ -85,4 +85,4 @@ const updateData = async (id, form) => {
   }
 }
 
-export { getAllData, getDataById, addData, deleteData, updateData }
+export { getAllDivision, getDataById, addData, deleteData, updateData }

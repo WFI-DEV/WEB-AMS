@@ -15,13 +15,13 @@ import {
   CTableRow,
 } from '@coreui/react'
 
-import { getAllData } from 'src/axios/axiosBranch'
+import { getAllBranch } from 'src/axios/axiosBranch'
 
 const Branch = () => {
   // Get All Data
   const [branch, setBranch] = useState([])
   useEffect(() => {
-    getAllData((res) => setBranch(res))
+    getAllBranch((res) => setBranch(res))
   }, [])
 
   return (

@@ -4,7 +4,7 @@ import Swal from 'sweetalert2'
 const baseUrl = 'http://localhost:4409'
 const URL = `${baseUrl}/admin/master/category`
 
-const getAllData = async (callback) => {
+const getAllCategory = async (callback) => {
   try {
     let allData = await axios({
       method: 'GET',
@@ -87,4 +87,4 @@ const updateData = async (id, form) => {
   }
 }
 
-export { getAllData, getDataById, addData, deleteData, updateData }
+export { getAllCategory, getDataById, addData, deleteData, updateData }

@@ -24,13 +24,13 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
-import { getAllData, deleteData, addData, getDataById, updateData } from 'src/axios/axiosDetail'
+import { getAllDetail, deleteData, addData, getDataById, updateData } from 'src/axios/axiosDetail'
 
 const Detail = () => {
   // Get All Data
   const [detail, setDetail] = useState([])
   useEffect(() => {
-    getAllData((res) => setDetail(res))
+    getAllDetail((res) => setDetail(res))
   }, [])
 
   // Add Data

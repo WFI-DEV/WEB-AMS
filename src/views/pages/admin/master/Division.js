@@ -24,13 +24,19 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
-import { getAllData, deleteData, addData, getDataById, updateData } from 'src/axios/axiosDivision'
+import {
+  getAllDivision,
+  deleteData,
+  addData,
+  getDataById,
+  updateData,
+} from 'src/axios/axiosDivision'
 
 const Division = () => {
   // Get All Data
   const [division, setDivision] = useState([])
   useEffect(() => {
-    getAllData((res) => setDivision(res))
+    getAllDivision((res) => setDivision(res))
   }, [])
 
   // Add Data

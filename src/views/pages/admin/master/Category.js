@@ -24,13 +24,19 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
-import { getAllData, deleteData, addData, getDataById, updateData } from 'src/axios/axiosCategory'
+import {
+  getAllCategory,
+  deleteData,
+  addData,
+  getDataById,
+  updateData,
+} from 'src/axios/axiosCategory'
 
 const Category = () => {
   // Get All Data
   const [category, setCategory] = useState([])
   useEffect(() => {
-    getAllData((res) => setCategory(res))
+    getAllCategory((res) => setCategory(res))
   }, [])
 
   // Add Data
