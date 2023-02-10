@@ -21,6 +21,7 @@ const routesAdmin = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'DashboardAdmin', element: DashboardAdmin },
   { path: '/assets', name: 'AssetsAdmin', element: AssetsAdmin },
+
   { path: '/master/category', name: 'CategoryMaster', element: CategoryMaster },
   { path: '/master/branch', name: 'BranchMaster', element: BranchMaster },
   { path: '/master/division', name: 'DivisionMaster', element: DivisionMaster },

@@ -69,7 +69,7 @@ const Detail = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader className="fw-bold">Details</CCardHeader>
+            <CCardHeader className="fw-bold">Detail</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (
@@ -123,13 +123,13 @@ const Detail = () => {
                         <div>{index + 1}.</div>
                       </CTableDataCell>
 
-                      {/* Detail */}
+                      {/* Submission */}
                       <CTableDataCell className="text-center">
                         <div>{item.name}</div>
                       </CTableDataCell>
 
                       {/* Actions */}
-                      <CTableDataCell className="text-center">
+                      <CTableDataCell className="text-center ">
                         <CButton
                           color="danger"
                           size="sm"
@@ -158,7 +158,8 @@ const Detail = () => {
                           color="info"
                           size="sm"
                           className="text-light"
-                          onClick={(() => setEditButton(!editButton), btnEdit(item.id))}
+                          // eslint-disable-next-line
+                          onClick={() => (setEditButton(!editButton), btnEdit(item.id))}
                         >
                           <CIcon icon={cilPencil} />
                         </CButton>
@@ -186,7 +187,7 @@ const Detail = () => {
         <CModalBody>
           <CFormInput
             type="text"
-            id="inputEditDetail"
+            id="inputEditSubmission"
             className="form-control"
             value={formEdit.name}
             onChange={(e) => setFormEdit({ name: e.target.value })}

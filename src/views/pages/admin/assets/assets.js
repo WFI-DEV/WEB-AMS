@@ -1,16 +1,27 @@
 import React, { useState } from 'react'
 import {
+  CBadge,
   CButton,
+  CButtonGroup,
+  CButtonToolbar,
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
   CContainer,
+  CDropdown,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle,
   CForm,
   CFormCheck,
   CFormInput,
   CFormLabel,
   CFormSelect,
+  CInputGroup,
+  CInputGroupText,
+  CListGroup,
+  CListGroupItem,
   CModal,
   CModalBody,
   CModalFooter,
@@ -23,11 +34,12 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CTooltip,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilFindInPage, cilPencil, cilPlus, cilQrCode, cilTrash } from '@coreui/icons'
+import { cilFilter, cilPencil, cilPlus, cilQrCode, cilTrash } from '@coreui/icons'
 
-const Assets = () => {
+const Assets2 = () => {
   const [modalNewAsset, setModalNewAsset] = useState(false)
   const [modalDetail, setModalDetail] = useState(false)
   return (
@@ -37,27 +49,90 @@ const Assets = () => {
           <CCard className="mb-4">
             <CCardHeader className="fw-bold">Assets</CCardHeader>
             <CCardBody>
+              {/* + NEW ASSET */}
               <CButton
                 color="primary"
-                className="mb-3 "
                 onClick={() => setModalNewAsset(!modalNewAsset)}
+                className="mb-3 mt-1"
               >
                 <CIcon icon={cilPlus} className="me-2" />
                 New Asset by Admin
               </CButton>
-              {/* Table */}
-              <CTable align="middle" className="mb-0 border" responsive striped>
+
+              {/* ---------------------------- FILTER ---------------------------- */}
+              <CButtonToolbar
+                className="mt-2 float-end"
+                role="group"
+                aria-label="Toolbar with button groups"
+              >
+                <CButtonGroup role="group" aria-label="Button group with nested dropdown" size="sm">
+                  {/* Reset */}
+                  <CTooltip content="Reset Filter" placement="left">
+                    <CButton color="dark" variant="outline" className="me-1">
+                      <CIcon icon={cilFilter} />
+                    </CButton>
+                  </CTooltip>
+                  {/* Filter Category */}
+
+                  <CDropdown variant="btn-group">
+                    <CDropdownToggle size="sm" color="dark" className="text-light me-1">
+                      Category :
+                      <CBadge color="light" className="ms-2 text-dark">
+                        All
+                      </CBadge>
+                    </CDropdownToggle>
+
+                    <CDropdownMenu>
+                      <CDropdownItem href="#">Monitor</CDropdownItem>
+                      <CDropdownItem href="#">CPU</CDropdownItem>
+                      <CDropdownItem href="#">Printer</CDropdownItem>
+                    </CDropdownMenu>
+                  </CDropdown>
+
+                  {/* Filter Branch */}
+
+                  <CDropdown variant="btn-group">
+                    <CDropdownToggle color="dark" size="sm" className="text-light me-1">
+                      Branch :
+                      <CBadge color="light" className="ms-2 text-dark">
+                        All
+                      </CBadge>
+                    </CDropdownToggle>
+                    <CDropdownMenu>
+                      <CDropdownItem>Jakarta</CDropdownItem>
+                      <CDropdownItem>Bandung</CDropdownItem>
+                      <CDropdownItem>Semarang</CDropdownItem>
+                    </CDropdownMenu>
+                  </CDropdown>
+
+                  {/* Filter Conditions */}
+                  <CDropdown variant="btn-group" className="me-5">
+                    <CDropdownToggle color="dark" size="sm" className="text-light">
+                      Conditions :
+                      <CBadge color="white" className="ms-2 text-dark">
+                        All
+                      </CBadge>
+                    </CDropdownToggle>
+                    <CDropdownMenu>
+                      <CDropdownItem>Good</CDropdownItem>
+                      <CDropdownItem>Damaged</CDropdownItem>
+                    </CDropdownMenu>
+                  </CDropdown>
+                </CButtonGroup>
+              </CButtonToolbar>
+
+              {/* -------------------------------  TABLE ------------------------------- */}
+              <CTable align="middle" className="mb-0 border" striped>
                 {/* Table Header */}
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Category</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Amount</CTableHeaderCell>
-                    {/* <CTableHeaderCell className="text-center">Brand</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Year Purchase</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Code Assets</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Division</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Condition</CTableHeaderCell> */}
+                    <CTableHeaderCell className="text-center">Assets</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Code</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Branch</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">User</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Conditions</CTableHeaderCell>
+
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -69,28 +144,86 @@ const Assets = () => {
                     <CTableDataCell className="text-start">
                       <div>1.</div>
                     </CTableDataCell>
-
-                    {/* Category */}
-                    <CTableDataCell className="text-center">
+                    {/* Assets */}
+                    <CTableDataCell className="text-start">
+                      <div>Samsung A123</div>
                       <div>Monitor</div>
+                      <div className="small text-medium-emphasis">
+                        <div>2021</div>
+                      </div>
                     </CTableDataCell>
+                    {/* Code */}
+                    <CTableDataCell className="text-start">
+                      {/* Code asset */}
+                      <div>
+                        <div>
+                          <div className="small text-medium-emphasis ">
+                            <span>Asset :</span>
+                          </div>
+                          <div>MNT/IT/001/ADM/AMB/BPF</div>
+                        </div>
 
-                    {/* Amount */}
+                        <div>
+                          <div className="small text-medium-emphasis ">
+                            <span>Invoice :</span>
+                          </div>
+                          <div>INV/123/321</div>
+                        </div>
+
+                        <div>
+                          <div className="small text-medium-emphasis ">
+                            <span>Submission :</span>
+                          </div>
+                          <div>Input by: Admin</div>
+                        </div>
+                      </div>
+                    </CTableDataCell>
+                    {/* User */}
                     <CTableDataCell className="text-center">
-                      <CCol>5 Unit</CCol>
+                      <div>Jakarta</div>
                     </CTableDataCell>
+                    {/* User */}
+                    <CTableDataCell className="text-center">
+                      <div>
+                        <div>
+                          <div>Mr. Jhon</div>
+                          <div className="small text-medium-emphasis ">
+                            <span>Marketing</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CTableDataCell>
+                    {/* Condition */}
+                    <CTableDataCell className="text-end">
+                      <div>
+                        <div>
+                          <div className="small text-medium-emphasis ">
+                            <span>Conditions :</span>
+                          </div>
+                          <div>Good</div>
+                        </div>
 
+                        <div>
+                          <div className="small text-medium-emphasis ">
+                            <span>Detail :</span>
+                          </div>
+                          <div>Used</div>
+                        </div>
+                      </div>
+                    </CTableDataCell>
                     {/* Actions */}
                     <CTableDataCell className="text-center">
                       <CContainer>
-                        <CButton
-                          color="info"
-                          size="sm"
-                          className="text-light"
-                          onClick={() => setModalDetail(!modalDetail)}
-                        >
-                          <CIcon icon={cilFindInPage} className="me-2 text-light" />
-                          Detail
+                        <CButton color="danger" size="sm" className="me-1 text-light">
+                          <CIcon icon={cilTrash} />
+                        </CButton>
+
+                        <CButton color="info" size="sm" className="me-1 text-light">
+                          <CIcon icon={cilPencil} />
+                        </CButton>
+
+                        <CButton color="success" size="sm" className="me-1 text-light">
+                          <CIcon icon={cilQrCode} />
                         </CButton>
                       </CContainer>
                     </CTableDataCell>
@@ -263,98 +396,7 @@ const Assets = () => {
         <CModalBody>
           <CCard>
             <CCardHeader>Monitor</CCardHeader>
-            <CCardBody>
-              <CTable align="middle" className="mb-0 border" striped>
-                {/* Table Header */}
-                <CTableHead color="dark">
-                  <CTableRow>
-                    <CTableHeaderCell className="text-start">No</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Brand</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Years Purchase</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Code</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Invoice</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Branch</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Division</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">User</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Conditions</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Detail</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-
-                {/* Table Body */}
-                <CTableBody>
-                  <CTableRow v-for="item in tableItems">
-                    {/* No */}
-                    <CTableDataCell className="text-start">
-                      <div>1.</div>
-                    </CTableDataCell>
-
-                    {/* Category */}
-                    <CTableDataCell className="text-center">
-                      <div>Samsung A123</div>
-                    </CTableDataCell>
-
-                    {/* Year Purchase */}
-                    <CTableDataCell className="text-center">
-                      <div>2021</div>
-                    </CTableDataCell>
-
-                    {/* Code */}
-                    <CTableDataCell className="text-center">
-                      <div>MNT/IT/001/ADM/AMB/BPF</div>
-                    </CTableDataCell>
-
-                    {/* Invoice */}
-                    <CTableDataCell className="text-center">
-                      <div>INV/123/321</div>
-                    </CTableDataCell>
-
-                    {/* Branch */}
-                    <CTableDataCell className="text-center">
-                      <div>Jakarta</div>
-                    </CTableDataCell>
-
-                    {/* Branch */}
-                    <CTableDataCell className="text-center">
-                      <div>Marketing</div>
-                    </CTableDataCell>
-
-                    {/* User */}
-                    <CTableDataCell className="text-center">
-                      <div>Mr. Jhon</div>
-                    </CTableDataCell>
-
-                    {/* Conditions */}
-                    <CTableDataCell className="text-center">
-                      <div>Good</div>
-                    </CTableDataCell>
-
-                    {/* Detail */}
-                    <CTableDataCell className="text-center">
-                      <div>Used</div>
-                    </CTableDataCell>
-
-                    {/* Actions */}
-                    <CTableDataCell className="text-center">
-                      <CContainer>
-                        <CButton color="danger" size="sm" className="me-1 text-light">
-                          <CIcon icon={cilTrash} />
-                        </CButton>
-
-                        <CButton color="info" size="sm" className="me-1 text-light">
-                          <CIcon icon={cilPencil} />
-                        </CButton>
-
-                        <CButton color="info" size="sm" className="me-1 text-light">
-                          <CIcon icon={cilQrCode} />
-                        </CButton>
-                      </CContainer>
-                    </CTableDataCell>
-                  </CTableRow>
-                </CTableBody>
-              </CTable>
-            </CCardBody>
+            <CCardBody></CCardBody>
           </CCard>
         </CModalBody>
       </CModal>
@@ -362,4 +404,4 @@ const Assets = () => {
   )
 }
 
-export default Assets
+export default Assets2

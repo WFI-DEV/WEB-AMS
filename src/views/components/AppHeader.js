@@ -22,7 +22,7 @@ const AppHeader = () => {
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
 
-        <CHeaderBrand>Welcome to Admin Inventaris Page</CHeaderBrand>
+        <CHeaderBrand>Welcome to WFI-AMS Admin Pusat Dashboard</CHeaderBrand>
 
         {/* Header Navigation Awal */}
 

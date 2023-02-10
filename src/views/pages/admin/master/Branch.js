@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import Swal from 'sweetalert2'
 
 import {
-  CButton,
   CCard,
   CCardBody,
   CCardHeader,
+  CCardSubtitle,
   CCol,
-  CContainer,
-  CFormInput,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
   CRow,
   CTable,
   CTableBody,
@@ -22,9 +14,8 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
-import { getAllData, deleteData, addData, getDataById, updateData } from 'src/axios/axiosBranch'
+
+import { getAllData } from 'src/axios/axiosBranch'
 
 const Branch = () => {
   // Get All Data
@@ -33,84 +24,23 @@ const Branch = () => {
     getAllData((res) => setBranch(res))
   }, [])
 
-  // Add Data
-  const [formAdd, setFormAdd] = useState({
-    name: '',
-  })
-  // Button Submit Add Data
-  const submitAdd = () => {
-    addData(formAdd)
-  }
-
-  // Edit Data
-  // Id Edit
-  const [dataId, setDataId] = useState()
-  // Form Edit
-  const [formEdit, setFormEdit] = useState({})
-  const btnEdit = (id) => {
-    getDataById(id, (res) => {
-      setDataId(id)
-      setFormEdit({ name: res.name })
-    })
-  }
-  // console.log(formEdit)
-
-  const submitEdit = () => {
-    updateData(dataId, formEdit)
-  }
-
-  // Button Open Input New Data
-  const [newButton, setNewButton] = useState(true)
-  // Button Open Modal Edit Data
-  const [editButton, setEditButton] = useState(false)
-
   return (
     <>
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader className="fw-bold">Branch</CCardHeader>
+            <CCardHeader className="fw-bold">Branch - Maxiloan</CCardHeader>
             <CCardBody>
-              {/* + NEW  */}
-              {newButton ? (
-                <CButton color="primary" className="mb-3 " onClick={() => setNewButton(!newButton)}>
-                  <CIcon icon={cilPlus} className="me-2" />
-                  New Branch
-                </CButton>
-              ) : (
-                <CContainer>
-                  <CCol md={3} className="mb-2 fw-bold">
-                    <CFormInput
-                      id="inputYears"
-                      label=" Create New Branch"
-                      placeholder="Text Here..."
-                      onChange={(e) => setFormAdd({ ...formAdd, name: e.target.value })}
-                    />
-                  </CCol>
-
-                  <CButton type="submit" className="mb-3 me-2 " onClick={() => submitAdd()}>
-                    Add
-                  </CButton>
-
-                  <CButton
-                    type="submit"
-                    className="mb-3 text-light"
-                    color="danger"
-                    onClick={() => setNewButton(!newButton)}
-                  >
-                    Cancel
-                  </CButton>
-                </CContainer>
-              )}
-
+              <CCardSubtitle className="mb-3">Maxiloan Data</CCardSubtitle>
               {/* Table */}
               <CTable align="middle" className="mb-0 border" striped>
                 {/* Table Header */}
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Branch ID</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Branch Name</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Code Branch</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
 
@@ -123,44 +53,26 @@ const Branch = () => {
                         <div>{index + 1}.</div>
                       </CTableDataCell>
 
-                      {/* Branch */}
+                      {/* ID */}
                       <CTableDataCell className="text-center">
-                        <div>{item.name}</div>
+                        <div>{item.BranchID}</div>
                       </CTableDataCell>
 
-                      {/* Actions */}
+                      {/* Branch */}
                       <CTableDataCell className="text-center">
-                        <CButton
-                          color="danger"
-                          size="sm"
-                          className="me-1 text-light"
-                          onClick={() =>
-                            Swal.fire({
-                              title: 'Are you sure?',
-                              text: "You won't be able to delete this!",
-                              icon: 'warning',
-                              showCancelButton: true,
-                              confirmButtonColor: '#3085d6',
-                              cancelButtonColor: '#d33',
-                              confirmButtonText: 'Yes, delete it!',
-                            }).then((result) => {
-                              if (result.isConfirmed) {
-                                // delete from axios
-                                deleteData(item.id)
-                              }
-                            })
-                          }
-                        >
-                          <CIcon icon={cilTrash} />
-                        </CButton>
-                        <CButton
-                          color="info"
-                          size="sm"
-                          className="text-light"
-                          onClick={() => (setEditButton(!editButton), btnEdit(item.id))}
-                        >
-                          <CIcon icon={cilPencil} />
-                        </CButton>
+                        {/* Merubah Jakarta timur jadi 1 , utara 2 */}
+                        <div>
+                          {item.BranchName === 'JAKARTA TIMUR'
+                            ? 'JAKARTA 1'
+                            : item.BranchName === 'JAKARTA UTARA'
+                            ? 'JAKARTA 2'
+                            : item.BranchName}
+                        </div>
+                      </CTableDataCell>
+
+                      {/* Code Branch */}
+                      <CTableDataCell className="text-center">
+                        <div>JKT</div>
                       </CTableDataCell>
                     </CTableRow>
                   ))}
@@ -170,36 +82,6 @@ const Branch = () => {
           </CCard>
         </CCol>
       </CRow>
-
-      {/* ##########---------- MODAL ----------########## */}
-      {/* ##########---------- EDIT MODAL ----------########## */}
-      <CModal
-        alignment="center"
-        visible={editButton}
-        backdrop="static"
-        onClose={() => setEditButton(false)}
-      >
-        <CModalHeader>
-          <CModalTitle>Edit Branch Name</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CFormInput
-            type="text"
-            id="inputEditCategory"
-            className="form-control"
-            value={formEdit.name}
-            onChange={(e) => setFormEdit({ name: e.target.value })}
-          />
-        </CModalBody>
-        <CModalFooter>
-          <CButton color="secondary" onClick={() => setEditButton(false)}>
-            Close
-          </CButton>
-          <CButton color="primary" onClick={() => submitEdit()}>
-            Save changes
-          </CButton>
-        </CModalFooter>
-      </CModal>
     </>
   )
 }

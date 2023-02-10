@@ -7,7 +7,7 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CContainer,
+  CForm,
   CFormInput,
   CModal,
   CModalBody,
@@ -36,6 +36,7 @@ const Category = () => {
   // Add Data
   const [formAdd, setFormAdd] = useState({
     name: '',
+    code: '',
   })
   // Button Submit Add Data
   const submitAdd = () => {
@@ -45,12 +46,16 @@ const Category = () => {
   // Edit Data
   // Id Edit
   const [dataId, setDataId] = useState()
+  // console.log(dataId)
   // Form Edit
   const [formEdit, setFormEdit] = useState({})
   const btnEdit = (id) => {
     getDataById(id, (res) => {
       setDataId(id)
-      setFormEdit({ name: res.name })
+      setFormEdit({
+        name: res.name,
+        code: res.code,
+      })
     })
   }
   // console.log(formEdit)
@@ -78,29 +83,38 @@ const Category = () => {
                   New Category
                 </CButton>
               ) : (
-                <CContainer>
-                  <CCol md={3} className="mb-2 fw-bold">
+                // -------------------------------------------------
+                <CForm className="row g-3">
+                  <CCol md={3}>
                     <CFormInput
-                      id="inputCategory"
-                      label=" Create New Category"
+                      id="inputNameCategory"
+                      label="Name"
                       placeholder="Text Here..."
                       onChange={(e) => setFormAdd({ ...formAdd, name: e.target.value })}
                     />
                   </CCol>
+                  <CCol md={3}>
+                    <CFormInput
+                      id="inputCodeCategory"
+                      label="Code"
+                      placeholder="Text Here..."
+                      onChange={(e) => setFormAdd({ ...formAdd, code: e.target.value })}
+                    />
+                  </CCol>
 
-                  <CButton type="submit" className="mb-3 me-2 " onClick={() => submitAdd()}>
-                    Add
-                  </CButton>
-
-                  <CButton
-                    type="submit"
-                    className="mb-3 text-light"
-                    color="danger"
-                    onClick={() => setNewButton(!newButton)}
-                  >
-                    Cancel
-                  </CButton>
-                </CContainer>
+                  <CCol xs={12}>
+                    <CButton className="mb-3 me-2 " onClick={() => submitAdd()}>
+                      Add
+                    </CButton>
+                    <CButton
+                      className="mb-3 text-light"
+                      color="danger"
+                      onClick={() => setNewButton(!newButton)}
+                    >
+                      Cancel
+                    </CButton>
+                  </CCol>
+                </CForm>
               )}
 
               {/* Table */}
@@ -110,6 +124,7 @@ const Category = () => {
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Category Name</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Code</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -126,6 +141,11 @@ const Category = () => {
                       {/* Category */}
                       <CTableDataCell className="text-center">
                         <div>{item.name}</div>
+                      </CTableDataCell>
+
+                      {/* Code */}
+                      <CTableDataCell className="text-center">
+                        <div>{item.code}</div>
                       </CTableDataCell>
 
                       {/* Actions */}
@@ -158,7 +178,7 @@ const Category = () => {
                           color="info"
                           size="sm"
                           className="text-light"
-                          onClick={() => (setEditButton(!editButton), btnEdit(item.id))}
+                          onClick={() => setEditButton(!editButton, btnEdit(item.id))}
                         >
                           <CIcon icon={cilPencil} />
                         </CButton>
@@ -183,13 +203,22 @@ const Category = () => {
         <CModalHeader>
           <CModalTitle>Edit Category Name</CModalTitle>
         </CModalHeader>
-        <CModalBody>
+        <CModalBody className="fw-bold">
           <CFormInput
+            label="Name"
             type="text"
             id="inputEditCategory"
-            className="form-control"
+            className="form-control mb-2"
             value={formEdit.name}
-            onChange={(e) => setFormEdit({ name: e.target.value })}
+            onChange={(e) => setFormEdit({ name: e.target.value, code: formEdit.code })}
+          />
+          <CFormInput
+            label="Code"
+            type="text"
+            id="inputEditCategory"
+            className="form-control "
+            value={formEdit.code}
+            onChange={(e) => setFormEdit({ name: formEdit.name, code: e.target.value })}
           />
         </CModalBody>
         <CModalFooter>

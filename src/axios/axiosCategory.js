@@ -67,6 +67,8 @@ const deleteData = async (id) => {
 }
 
 const updateData = async (id, form) => {
+  console.log(form)
+
   try {
     await axios({
       method: 'PUT',

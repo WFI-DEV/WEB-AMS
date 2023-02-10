@@ -1,9 +1,10 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
+import { CImage, CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
 
 import { AppSidebarNav } from './AppSidebarNav'
+import logo from '../../assets/logo.png'
 
 // import { logoNegative } from 'src/assets/brand/logo-negative'
 // import { sygnet } from 'src/assets/brand/sygnet'
@@ -32,7 +33,7 @@ const AppSidebarMaster = () => {
       <CSidebarBrand className="d-none d-md-flex " to="/">
         {/* <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} /> */}
-        PT. Woori Finance Indonesia
+        <CImage align="center" rounded src={logo} width={90} height={60} />
       </CSidebarBrand>
 
       {/* Side Nav */}
