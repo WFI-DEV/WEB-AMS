@@ -24,7 +24,13 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
-import { getAllData, deleteData, addData, getDataById, updateData } from 'src/axios/axiosSubmission'
+import {
+  getAllData,
+  deleteData,
+  addData,
+  getDataById,
+  updateData,
+} from 'src/axios/admin/master/axiosSubmission'
 
 const Submission = () => {
   // Get All Data
@@ -104,7 +110,7 @@ const Submission = () => {
               )}
 
               {/* Table */}
-              <CTable align="middle" className="mb-0 border" striped>
+              <CTable align="middle" className="mb-0 border" striped small>
                 {/* Table Header */}
                 <CTableHead color="dark">
                   <CTableRow>

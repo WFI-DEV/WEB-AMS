@@ -30,7 +30,7 @@ import {
   addData,
   getDataById,
   updateData,
-} from 'src/axios/axiosDivision'
+} from 'src/axios/admin/master/axiosDivision'
 
 const Division = () => {
   // Get All Data
@@ -110,12 +110,13 @@ const Division = () => {
               )}
 
               {/* Table */}
-              <CTable align="middle" className="mb-0 border" striped>
+              <CTable align="middle" className="mb-0 border" striped small>
                 {/* Table Header */}
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Division Name</CTableHeaderCell>
+                    {/* <CTableHeaderCell className="text-center">ID</CTableHeaderCell> */}
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -133,6 +134,11 @@ const Division = () => {
                       <CTableDataCell className="text-center">
                         <div>{item.name}</div>
                       </CTableDataCell>
+
+                      {/* ID */}
+                      {/* <CTableDataCell className="text-center">
+                        <div>{item.id}</div>
+                      </CTableDataCell> */}
 
                       {/* Actions */}
                       <CTableDataCell className="text-center">

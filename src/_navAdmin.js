@@ -78,6 +78,11 @@ const _nav = [
       },
       {
         component: CNavItem,
+        name: 'Brand',
+        to: 'master/brand',
+      },
+      {
+        component: CNavItem,
         name: 'Division',
         to: 'master/division',
       },

@@ -7,9 +7,8 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CForm,
+  CContainer,
   CFormInput,
-  CFormSelect,
   CModal,
   CModalBody,
   CModalFooter,
@@ -26,27 +25,24 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
 import {
-  getAllVendor,
+  getAllBrand,
   deleteData,
   addData,
   getDataById,
   updateData,
-} from 'src/axios/admin/master/axiosVendor'
-import { getAllBranch } from 'src/axios/admin/master/axiosBranch'
+} from 'src/axios/admin/master/axiosBrand'
 
-const Vendor = () => {
+const Brand = () => {
   // Get All Data
-  const [vendor, setVendor] = useState([])
+  const [brand, setBrand] = useState([])
   useEffect(() => {
-    getAllVendor((res) => setVendor(res))
+    getAllBrand((res) => setBrand(res))
   }, [])
 
   // Add Data
   const [formAdd, setFormAdd] = useState({
     name: '',
-    BranchId: '',
   })
-  console.log(formAdd)
   // Button Submit Add Data
   const submitAdd = () => {
     addData(formAdd)
@@ -60,11 +56,7 @@ const Vendor = () => {
   const btnEdit = (id) => {
     getDataById(id, (res) => {
       setDataId(id)
-      setFormEdit({
-        name: res.name,
-        BranchId: res.BranchId,
-        BranchName: res.BranchName,
-      })
+      setFormEdit({ name: res.name })
     })
   }
   // console.log(formEdit)
@@ -78,66 +70,43 @@ const Vendor = () => {
   // Button Open Modal Edit Data
   const [editButton, setEditButton] = useState(false)
 
-  // Get All Data Branch
-  const [branch, setbranch] = useState([])
-  useEffect(() => {
-    getAllBranch((res) => setbranch(res))
-  }, [])
   return (
     <>
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader className="fw-bold">Vendor</CCardHeader>
+            <CCardHeader className="fw-bold">Brand</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (
                 <CButton color="primary" className="mb-3 " onClick={() => setNewButton(!newButton)}>
                   <CIcon icon={cilPlus} className="me-2" />
-                  New Vendor
+                  New Brand
                 </CButton>
               ) : (
-                <CForm className="row g-3">
-                  {/* Vendor NAME */}
+                <CContainer>
                   <CCol md={3} className="mb-2 fw-bold">
                     <CFormInput
-                      id="inputNewVendow"
-                      label="Vendor Name"
+                      id="inputYears"
+                      label=" Create New Brand"
                       placeholder="Text Here..."
                       onChange={(e) => setFormAdd({ ...formAdd, name: e.target.value })}
                     />
                   </CCol>
 
-                  {/* BranchName */}
-                  <CCol md={3} className="mb-2 fw-bold">
-                    <CFormSelect
-                      label="Branch"
-                      onChange={(e) =>
-                        setFormAdd({ ...formAdd, BranchId: JSON.parse(e.target.value).BranchId })
-                      }
-                    >
-                      <option hidden>Choose...</option>
-                      {branch.map((item, index) => (
-                        <option key={index} value={JSON.stringify(item)}>
-                          {item.BranchName}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                  </CCol>
-                  <CCol xs={12}>
-                    <CButton className="mb-3 me-2 " onClick={() => submitAdd()}>
-                      Add
-                    </CButton>
+                  <CButton type="submit" className="mb-3 me-2 " onClick={() => submitAdd()}>
+                    Add
+                  </CButton>
 
-                    <CButton
-                      className="mb-3 text-light"
-                      color="danger"
-                      onClick={() => setNewButton(!newButton)}
-                    >
-                      Cancel
-                    </CButton>
-                  </CCol>
-                </CForm>
+                  <CButton
+                    type="submit"
+                    className="mb-3 text-light"
+                    color="danger"
+                    onClick={() => setNewButton(!newButton)}
+                  >
+                    Cancel
+                  </CButton>
+                </CContainer>
               )}
 
               {/* Table */}
@@ -146,33 +115,33 @@ const Vendor = () => {
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Vendor Name</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Branch</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Brand Name</CTableHeaderCell>
+                    {/* <CTableHeaderCell className="text-center">ID</CTableHeaderCell> */}
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
 
                 {/* Table Body */}
                 <CTableBody>
-                  {vendor.map((item, index) => (
+                  {brand.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       {/* No */}
                       <CTableDataCell className="text-start">
                         <div>{index + 1}.</div>
                       </CTableDataCell>
 
-                      {/* Name */}
+                      {/* Submission */}
                       <CTableDataCell className="text-center">
                         <div>{item.name}</div>
                       </CTableDataCell>
 
-                      {/* Branch */}
-                      <CTableDataCell className="text-center">
-                        <div>{item.BranchName}</div>
-                      </CTableDataCell>
+                      {/* ID */}
+                      {/* <CTableDataCell className="text-center">
+                        <div>{item.id}</div>
+                      </CTableDataCell> */}
 
                       {/* Actions */}
-                      <CTableDataCell className="text-center">
+                      <CTableDataCell className="text-center ">
                         <CButton
                           color="danger"
                           size="sm"
@@ -201,6 +170,7 @@ const Vendor = () => {
                           color="info"
                           size="sm"
                           className="text-light"
+                          // eslint-disable-next-line
                           onClick={() => (setEditButton(!editButton), btnEdit(item.id))}
                         >
                           <CIcon icon={cilPencil} />
@@ -224,32 +194,16 @@ const Vendor = () => {
         onClose={() => setEditButton(false)}
       >
         <CModalHeader>
-          <CModalTitle>Edit Vendor</CModalTitle>
+          <CModalTitle>Edit Detail Brand</CModalTitle>
         </CModalHeader>
-        <CModalBody className="fw-bold">
-          {/* Name */}
+        <CModalBody>
           <CFormInput
-            label="Vendor Name"
             type="text"
-            id="inputEditVendor"
-            className="form-control mb-1 "
+            id="inputEditSubmission"
+            className="form-control"
             value={formEdit.name}
             onChange={(e) => setFormEdit({ name: e.target.value })}
           />
-          {/* Branch */}
-          <CFormSelect
-            label="Branch"
-            onChange={(e) =>
-              setFormEdit({ ...formEdit, BranchId: JSON.parse(e.target.value).BranchId })
-            }
-          >
-            <option hidden>{formEdit.BranchName}</option>
-            {branch.map((item, index) => (
-              <option key={index} value={JSON.stringify(item)}>
-                {item.BranchName}
-              </option>
-            ))}
-          </CFormSelect>
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setEditButton(false)}>
@@ -264,4 +218,4 @@ const Vendor = () => {
   )
 }
 
-export default Vendor
+export default Brand

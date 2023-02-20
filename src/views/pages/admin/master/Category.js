@@ -30,7 +30,7 @@ import {
   addData,
   getDataById,
   updateData,
-} from 'src/axios/axiosCategory'
+} from 'src/axios/admin/master/axiosCategory'
 
 const Category = () => {
   // Get All Data
@@ -124,7 +124,7 @@ const Category = () => {
               )}
 
               {/* Table */}
-              <CTable align="middle" className="mb-0 border" striped>
+              <CTable small align="middle" className="mb-0 border" striped>
                 {/* Table Header */}
                 <CTableHead color="dark">
                   <CTableRow>

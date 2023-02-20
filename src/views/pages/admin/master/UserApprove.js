@@ -7,8 +7,9 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CContainer,
+  CForm,
   CFormInput,
+  CFormSelect,
   CModal,
   CModalBody,
   CModalFooter,
@@ -30,7 +31,8 @@ import {
   addData,
   getDataById,
   updateData,
-} from 'src/axios/axiosUserApprove'
+} from 'src/axios/admin/master/axiosUserApprove'
+import { getAllBranch } from 'src/axios/admin/master/axiosBranch'
 
 const UserApprove = () => {
   // Get All Data
@@ -42,7 +44,10 @@ const UserApprove = () => {
   // Add Data
   const [formAdd, setFormAdd] = useState({
     name: '',
+    BranchId: '',
+    SeqNo: null,
   })
+  // console.log(formAdd)
   // Button Submit Add Data
   const submitAdd = () => {
     addData(formAdd)
@@ -56,7 +61,12 @@ const UserApprove = () => {
   const btnEdit = (id) => {
     getDataById(id, (res) => {
       setDataId(id)
-      setFormEdit({ name: res.name })
+      setFormEdit({
+        name: res.name,
+        BranchId: res.BranchId,
+        BranchName: res.BranchName,
+        SeqNo: res.SeqNo,
+      })
     })
   }
   // console.log(formEdit)
@@ -69,6 +79,12 @@ const UserApprove = () => {
   const [newButton, setNewButton] = useState(true)
   // Button Open Modal Edit Data
   const [editButton, setEditButton] = useState(false)
+
+  // Get All Data Branch
+  const [branch, setbranch] = useState([])
+  useEffect(() => {
+    getAllBranch((res) => setbranch(res))
+  }, [])
 
   return (
     <>
@@ -84,38 +100,73 @@ const UserApprove = () => {
                   New User Approve
                 </CButton>
               ) : (
-                <CContainer>
+                <CForm className="row g-3">
                   <CCol md={3} className="mb-2 fw-bold">
+                    {/* USER APRRONVE NAME */}
                     <CFormInput
                       id="inputYears"
-                      label=" Create New User Approve"
+                      label="User Approve Name"
                       placeholder="Text Here..."
                       onChange={(e) => setFormAdd({ ...formAdd, name: e.target.value })}
                     />
                   </CCol>
 
-                  <CButton type="submit" className="mb-3 me-2 " onClick={() => submitAdd()}>
-                    Add
-                  </CButton>
+                  {/* BranchName */}
+                  <CCol md={3} className="mb-2 fw-bold">
+                    <CFormSelect
+                      label="Branch"
+                      onChange={(e) =>
+                        setFormAdd({ ...formAdd, BranchId: JSON.parse(e.target.value).BranchId })
+                      }
+                    >
+                      <option hidden>Choose...</option>
+                      {branch.map((item, index) => (
+                        <option key={index} value={JSON.stringify(item)}>
+                          {item.BranchName}
+                        </option>
+                      ))}
+                    </CFormSelect>
+                  </CCol>
 
-                  <CButton
-                    type="submit"
-                    className="mb-3 text-light"
-                    color="danger"
-                    onClick={() => setNewButton(!newButton)}
-                  >
-                    Cancel
-                  </CButton>
-                </CContainer>
+                  {/* Sequence No */}
+                  <CCol md={3} className="mb-2 fw-bold">
+                    <CFormSelect
+                      label="Sequence No"
+                      onChange={(e) => setFormAdd({ ...formAdd, SeqNo: e.target.value })}
+                    >
+                      <option hidden>Choose...</option>
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                    </CFormSelect>
+                  </CCol>
+
+                  <CCol xs={12}>
+                    <CButton className="mb-3 me-2 " onClick={() => submitAdd()}>
+                      Add
+                    </CButton>
+
+                    <CButton
+                      type="submit"
+                      className="mb-3 text-light"
+                      color="danger"
+                      onClick={() => setNewButton(!newButton)}
+                    >
+                      Cancel
+                    </CButton>
+                  </CCol>
+                </CForm>
               )}
 
               {/* Table */}
-              <CTable align="middle" className="mb-0 border" striped>
+              <CTable align="middle" className="mb-0 border" striped small>
                 {/* Table Header */}
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">User Approve Name</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Branch</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Sequence No</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -132,6 +183,16 @@ const UserApprove = () => {
                       {/* User Approve */}
                       <CTableDataCell className="text-center">
                         <div>{item.name}</div>
+                      </CTableDataCell>
+
+                      {/* Branch */}
+                      <CTableDataCell className="text-center">
+                        <div>{item.BranchName}</div>
+                      </CTableDataCell>
+
+                      {/* User Approve */}
+                      <CTableDataCell className="text-center">
+                        <div>{item.SeqNo}</div>
                       </CTableDataCell>
 
                       {/* Actions */}
@@ -186,16 +247,44 @@ const UserApprove = () => {
         onClose={() => setEditButton(false)}
       >
         <CModalHeader>
-          <CModalTitle>Edit User Approve Name</CModalTitle>
+          <CModalTitle>Edit User Approve</CModalTitle>
         </CModalHeader>
-        <CModalBody>
+        <CModalBody className="fw-bold">
+          {/* User Approve Name */}
           <CFormInput
+            label="User Approve Name"
             type="text"
             id="inputEditUserApprove"
-            className="form-control"
+            className="form-control mb-1"
             value={formEdit.name}
-            onChange={(e) => setFormEdit({ name: e.target.value })}
+            onChange={(e) => setFormEdit({ ...formEdit, name: e.target.value })}
           />
+
+          {/* Branch */}
+          <CFormSelect
+            label="Branch"
+            onChange={(e) =>
+              setFormEdit({ ...formEdit, BranchId: JSON.parse(e.target.value).BranchId })
+            }
+          >
+            <option hidden>{formEdit.BranchName}</option>
+            {branch.map((item, index) => (
+              <option key={index} value={JSON.stringify(item)}>
+                {item.BranchName}
+              </option>
+            ))}
+          </CFormSelect>
+
+          {/* SEQUENCE NO */}
+          <CFormSelect
+            label="Sequence No"
+            onChange={(e) => setFormEdit({ ...formEdit, SeqNo: e.target.value })}
+          >
+            <option hidden>{formEdit.SeqNo}</option>
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+          </CFormSelect>
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setEditButton(false)}>

@@ -24,7 +24,13 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
-import { getAllDetail, deleteData, addData, getDataById, updateData } from 'src/axios/axiosDetail'
+import {
+  getAllDetail,
+  deleteData,
+  addData,
+  getDataById,
+  updateData,
+} from 'src/axios/admin/master/axiosDetail'
 
 const Detail = () => {
   // Get All Data
@@ -104,12 +110,13 @@ const Detail = () => {
               )}
 
               {/* Table */}
-              <CTable align="middle" className="mb-0 border" striped>
+              <CTable align="middle" className="mb-0 border" striped small>
                 {/* Table Header */}
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Detail Name</CTableHeaderCell>
+                    {/* <CTableHeaderCell className="text-center">ID</CTableHeaderCell> */}
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -127,6 +134,11 @@ const Detail = () => {
                       <CTableDataCell className="text-center">
                         <div>{item.name}</div>
                       </CTableDataCell>
+
+                      {/* ID */}
+                      {/* <CTableDataCell className="text-center">
+                        <div>{item.id}</div>
+                      </CTableDataCell> */}
 
                       {/* Actions */}
                       <CTableDataCell className="text-center ">
