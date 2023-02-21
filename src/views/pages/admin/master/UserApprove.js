@@ -33,6 +33,7 @@ import {
   updateData,
 } from 'src/axios/admin/master/axiosUserApprove'
 import { getAllBranch } from 'src/axios/admin/master/axiosBranch'
+import { inputNotComp } from 'src/utils/sweetAlert'
 
 const UserApprove = () => {
   // Get All Data
@@ -43,8 +44,8 @@ const UserApprove = () => {
 
   // Add Data
   const [formAdd, setFormAdd] = useState({
-    name: '',
-    BranchId: '',
+    name: null,
+    BranchId: null,
     SeqNo: null,
   })
   // console.log(formAdd)
@@ -142,7 +143,19 @@ const UserApprove = () => {
                   </CCol>
 
                   <CCol xs={12}>
-                    <CButton className="mb-3 me-2 " onClick={() => submitAdd()}>
+                    <CButton
+                      className="mb-3 me-2 "
+                      onClick={() =>
+                        formAdd.name === null ||
+                        formAdd.name === '' ||
+                        formAdd.BranchId === '' ||
+                        formAdd.BranchId === null ||
+                        formAdd.SeqNo === null ||
+                        formAdd.SeqNo === ''
+                          ? inputNotComp()
+                          : submitAdd()
+                      }
+                    >
                       Add
                     </CButton>
 
@@ -150,7 +163,14 @@ const UserApprove = () => {
                       type="submit"
                       className="mb-3 text-light"
                       color="danger"
-                      onClick={() => setNewButton(!newButton)}
+                      onClick={() => {
+                        setNewButton(!newButton)
+                        setFormAdd({
+                          name: null,
+                          BranchId: null,
+                          SeqNo: null,
+                        })
+                      }}
                     >
                       Cancel
                     </CButton>

@@ -6,10 +6,6 @@ import {
   CCard,
   CCardBody,
   CCardHeader,
-  CCardLink,
-  CCardSubtitle,
-  CCardText,
-  CCardTitle,
   CCol,
   CContainer,
   CForm,
@@ -46,13 +42,19 @@ import {
 import { getAllBrand } from 'src/axios/admin/master/axiosBrand'
 import { getAllVendor } from 'src/axios/admin/master/axiosVendor'
 import { getAllDivision } from 'src/axios/admin/master/axiosDivision'
-import { getAllAssets, addData, getDataById, deleteData } from 'src/axios/admin/assets/assetsAxios'
+import {
+  getAllAssets,
+  addData,
+  getDataById,
+  deleteData,
+  updateData,
+} from 'src/axios/admin/assets/assetsAxios'
 
 import { cilCalendar, cilFilter, cilPencil, cilPlus, cilQrCode, cilTrash } from '@coreui/icons'
 import { generateCodeAssets } from 'src/utils/generateCodeAssets'
 import { convertToRoman } from 'src/utils/convertToRoman'
 import { AdvReadMoreMore } from 'read-more-more'
-import { addAssetsAlert } from 'src/utils/sweetAlert'
+import { inputNotComp } from 'src/utils/sweetAlert'
 
 const Assets = () => {
   // Get Category Data
@@ -158,6 +160,16 @@ const Assets = () => {
   }
 
   // FORM EDIT ASSET
+
+  // Form edit code asset
+  const [formEditNewCode, setFormEditNewCode] = useState({
+    no: '',
+    categoryCode: '',
+    branchCode: '',
+    month: '',
+    years: '',
+  })
+  // console.log(formEditNewCode)
   const [formEdit, setFormEdit] = useState({})
   // console.log(formEdit)
   // Id Edit
@@ -166,9 +178,9 @@ const Assets = () => {
   // Button Submit Edit Asset
   const btnEdit = (id) => {
     getDataById(id, (res) => {
-      const x = res.code_asset
-      const y = x.split('/')
-      console.log(y)
+      const code = res.code_asset
+      const sliceCode = code.split('/')
+      // console.log(sliceCode)
       setDataId(id)
       setFormEdit({
         category_id: res.category_id,
@@ -192,10 +204,20 @@ const Assets = () => {
         vendorName: res.vendorName,
         divisionName: res.divisionName,
       })
+      setFormEditNewCode({
+        no: sliceCode[0],
+        categoryCode: sliceCode[1],
+        branchCode: sliceCode[2],
+        month: sliceCode[3],
+        years: sliceCode[4],
+      })
     })
   }
 
-  const submitEdit = () => {}
+  const submitEdit = () => {
+    updateData(dataId, { ...formEdit, code_asset: generateCodeAssets(formEditNewCode) })
+    // console.log({ ...formEdit, code_asset: generateCodeAssets(formEditNewCode) })
+  }
 
   // Modal Edit
   const [editButton, setEditButton] = useState(false)
@@ -221,7 +243,7 @@ const Assets = () => {
 
               {/* ---------------------------- FILTER ---------------------------- */}
 
-              <CForm small className="row gy-2 gx-3 align-items-center  mb-2">
+              <CForm className="row gy-2 gx-3 align-items-center  mb-2">
                 <CCol xs="auto">
                   <CInputGroup size="sm">
                     {/* Reset */}
@@ -297,7 +319,7 @@ const Assets = () => {
                       </CTableDataCell>
                       {/* Assets */}
 
-                      <CTableDataCell align="vertical" className="text-start w-25">
+                      <CTableDataCell className="text-start w-25">
                         {/* BRAND */}
                         <div className="fw-bold ">
                           {item.brandName} |{/* TYPE */}
@@ -352,7 +374,7 @@ const Assets = () => {
                       {/* Branch */}
                       <CTableDataCell className="text-start">
                         <div className="font-monospace text-muted small ">Branch:</div>
-                        <div>{item.BranchName}</div>
+                        <div className="fw-bold">{item.BranchName}</div>
 
                         <div className="font-monospace text-muted small ">Vendor:</div>
                         <div>{item.vendorName}</div>
@@ -479,9 +501,13 @@ const Assets = () => {
               </CCol>
             </CFormLabel>
             {/* Category */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3} className="">
               <CFormSelect
-                label="Category"
+                label={
+                  <div>
+                    <span className="fw-bold">Category</span> <span>*</span>
+                  </div>
+                }
                 onChange={(e) => {
                   // console.log(JSON.parse(e.target.value).id)
                   setFormAdd({ ...formAdd, category_id: JSON.parse(e.target.value).id })
@@ -501,9 +527,13 @@ const Assets = () => {
             </CCol>
 
             {/* Brand */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
-                label="Brand"
+                label={
+                  <div>
+                    <span className="fw-bold">Brand</span> <span>*</span>
+                  </div>
+                }
                 onChange={(e) => setFormAdd({ ...formAdd, brand_id: e.target.value })}
               >
                 <option selected="" value="" hidden>
@@ -518,19 +548,27 @@ const Assets = () => {
             </CCol>
 
             {/* TYPE */}
-            <CCol md={6} className="fw-bold">
+            <CCol md={6}>
               <CFormInput
                 id="inputType"
-                label="Type"
+                label={
+                  <div>
+                    <span className="fw-bold">Type</span> <span>*</span>
+                  </div>
+                }
                 placeholder="Text here..."
                 onChange={(e) => setFormAdd({ ...formAdd, type: e.target.value })}
               />
             </CCol>
 
             {/* Branch */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
-                label="Branch"
+                label={
+                  <div>
+                    <span className="fw-bold">Branch</span> <span>*</span>
+                  </div>
+                }
                 onClick={(e) => btnEditBranch(JSON.parse(e.target.value).id)}
                 onChange={(e) => {
                   setFormAdd({ ...formAdd, branch_id: JSON.parse(e.target.value).BranchId })
@@ -557,8 +595,14 @@ const Assets = () => {
             </CCol>
 
             {/* DATE PURCHASE */}
-            <CCol md={3} className="fw-bold">
-              <CFormLabel>Purchase Date</CFormLabel>
+            <CCol md={3}>
+              <CFormLabel>
+                {
+                  <div>
+                    <span className="fw-bold">Purchase Date</span> <span>*</span>
+                  </div>
+                }
+              </CFormLabel>
               <input
                 type="date"
                 className="form-control"
@@ -578,7 +622,13 @@ const Assets = () => {
 
             {/* Condition */}
             <CCol md={2}>
-              <CFormLabel className="fw-bold">Condition</CFormLabel>
+              <CFormLabel>
+                {
+                  <div>
+                    <span className="fw-bold">Condition</span> <span>*</span>
+                  </div>
+                }
+              </CFormLabel>
               <br />
 
               <CFormCheck
@@ -605,19 +655,27 @@ const Assets = () => {
             </CCol>
 
             {/* No Submission */}
-            <CCol md={4} className="fw-bold">
+            <CCol md={4}>
               <CFormInput
                 id="inputYears"
-                label="No. Submission"
+                label={
+                  <div>
+                    <span className="fw-bold">No. Submission</span> <span>*</span>
+                  </div>
+                }
                 disabled
                 placeholder="Input by: Admin"
               />
             </CCol>
 
             {/* Detail */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
-                label="Detail"
+                label={
+                  <div>
+                    <span className="fw-bold">Detail</span> <span>*</span>
+                  </div>
+                }
                 onChange={(e) => setFormAdd({ ...formAdd, detail_id: e.target.value })}
               >
                 <option hidden>Choose...</option>
@@ -630,9 +688,13 @@ const Assets = () => {
             </CCol>
 
             {/* Vendor */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
-                label="Vendor"
+                label={
+                  <div>
+                    <span className="fw-bold">Vendor</span> <span>*</span>
+                  </div>
+                }
                 onChange={(e) => setFormAdd({ ...formAdd, vendor_id: e.target.value })}
               >
                 <option hidden>Choose...</option>
@@ -646,10 +708,14 @@ const Assets = () => {
             </CCol>
 
             {/* Division */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
                 id="inputState"
-                label="Divison"
+                label={
+                  <div>
+                    <span className="fw-bold">Division</span> <span>*</span>
+                  </div>
+                }
                 onChange={(e) => setFormAdd({ ...formAdd, division_id: e.target.value })}
               >
                 <option hidden>Choose...</option>
@@ -662,20 +728,28 @@ const Assets = () => {
             </CCol>
 
             {/* User */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormInput
                 placeholder="Example: Mr. Jhon"
                 id="inputUser"
-                label="User"
+                label={
+                  <div>
+                    <span className="fw-bold">User</span> <span>*</span>
+                  </div>
+                }
                 onChange={(e) => setFormAdd({ ...formAdd, user_asset: e.target.value })}
               />
             </CCol>
 
             {/* Invoice */}
-            <CCol md={6} className="fw-bold">
+            <CCol md={6}>
               <CFormInput
                 id="inputInvoice"
-                label="No. Invoice"
+                label={
+                  <div>
+                    <span className="fw-bold">No. Invoice</span> <span>*</span>
+                  </div>
+                }
                 placeholder="Text Here..."
                 onChange={(e) => setFormAdd({ ...formAdd, no_invoice: e.target.value })}
               />
@@ -691,7 +765,28 @@ const Assets = () => {
           </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setModalNewAsset(false)}>
+          <CButton
+            color="secondary"
+            onClick={() => {
+              setModalNewAsset(false)
+              setFormAdd({
+                category_id: null,
+                brand_id: null,
+                type: null,
+                purchase_date: null,
+                code_asset: null,
+                branch_id: null,
+                division_id: null,
+                condition: null,
+                vendor_id: null,
+                user_asset: null,
+                no_invoice: null,
+                detail_id: null,
+                no_submission: 'Input by: Admin Pusat',
+                descriptions: '-',
+              })
+            }}
+          >
             Close
           </CButton>
           <CButton
@@ -700,6 +795,7 @@ const Assets = () => {
               formAdd.category_id === null ||
               formAdd.brand_id === null ||
               formAdd.type === null ||
+              formAdd.type === '' ||
               formAdd.branch_id === null ||
               formAdd.purchase_date === null ||
               formAdd.condition === null ||
@@ -707,8 +803,10 @@ const Assets = () => {
               formAdd.vendor_id === null ||
               formAdd.division_id === null ||
               formAdd.user_asset === null ||
-              formAdd.no_invoice === null
-                ? addAssetsAlert()
+              formAdd.user_asset === '' ||
+              formAdd.no_invoice === null ||
+              formAdd.no_invoice === ''
+                ? inputNotComp()
                 : submitAdd()
             }
           >
@@ -734,18 +832,26 @@ const Assets = () => {
               <CCol md={3} className="float-end border-bottom border-dark">
                 <div>
                   <span className="me-2 fw-bold">Code Asset :</span>
-                  <span>{formEdit.code_asset}</span>
+                  <span>{generateCodeAssets(formEditNewCode)}</span>
                 </div>
               </CCol>
             </CFormLabel>
             {/* Category */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
-                label="Category"
-                // onChange={(e) => {
-                //   setFormAdd({ ...formAdd, category_id: JSON.parse(e.target.value).id })
-                //   setFormNewCode({ ...formNewCode, categoryCode: JSON.parse(e.target.value).code })
-                // }}
+                label={
+                  <div>
+                    <span className="fw-bold">Category</span>
+                    <span>*</span>
+                  </div>
+                }
+                onChange={(e) => {
+                  setFormEdit({ ...formEdit, category_id: JSON.parse(e.target.value).id })
+                  setFormEditNewCode({
+                    ...formEditNewCode,
+                    categoryCode: JSON.parse(e.target.value).code,
+                  })
+                }}
                 required
               >
                 <option hidden value="">
@@ -760,10 +866,15 @@ const Assets = () => {
             </CCol>
 
             {/* Brand */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
-                label="Brand"
-                // onChange={(e) => setFormAdd({ ...formAdd, brand_id: e.target.value })}
+                label={
+                  <div>
+                    <span className="fw-bold">Brand</span>
+                    <span>*</span>
+                  </div>
+                }
+                onChange={(e) => setFormEdit({ ...formEdit, brand_id: e.target.value })}
               >
                 <option selected="" value="" hidden>
                   {formEdit.brandName}
@@ -777,30 +888,37 @@ const Assets = () => {
             </CCol>
 
             {/* TYPE */}
-            <CCol md={6} className="fw-bold">
+            <CCol md={6}>
               <CFormInput
                 id="inputType"
-                label="Type"
+                label={
+                  <div>
+                    <span className="fw-bold">Type</span>
+                    <span>*</span>
+                  </div>
+                }
                 value={formEdit.type}
-                // onChange={(e) => setFormAdd({ ...formAdd, type: e.target.value })}
+                onChange={(e) => setFormEdit({ ...formEdit, type: e.target.value })}
               />
             </CCol>
 
             {/* Branch */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
-                label="Branch"
-                // onClick={(e) => btnEditBranch(JSON.parse(e.target.value).id)}
+                disabled
+                label={
+                  <div>
+                    <span className="fw-bold">Branch</span>
+                    <span>*</span>
+                  </div>
+                }
                 // onChange={(e) => {
-                //   setFormAdd({ ...formAdd, branch_id: JSON.parse(e.target.value).BranchId })
-                //   setFormNewCode({
-                //     ...formNewCode,
+                //   setFormEdit({ ...formEdit, branch_id: JSON.parse(e.target.value).BranchId })
+                //   setFormEditNewCode({
+                //     ...formEditNewCode,
                 //     branchCode: JSON.parse(e.target.value).CodeBranch,
                 //     no: (Number(JSON.parse(e.target.value).SeqNo) + 1).toString().padStart(3, '0'),
                 //   })
-                //   setFormEditSNBranch(
-                //     (Number(JSON.parse(e.target.value).SeqNo) + 1).toString().padStart(3, '0'),
-                //   )
                 // }}
               >
                 <option hidden>{formEdit.BranchName}</option>
@@ -813,52 +931,92 @@ const Assets = () => {
             </CCol>
 
             {/* DATE PURCHASE */}
-            <CCol md={3} className="fw-bold">
-              <CFormLabel>Purchase Date</CFormLabel>
+            <CCol md={3}>
+              <CFormLabel>
+                <div>
+                  <span className="fw-bold">Purchase Date</span>
+                  <span>*</span>
+                </div>
+              </CFormLabel>
               <input
                 type="date"
                 className="form-control"
                 value={formEdit.purchase_date}
-                // onChange={(e) => {
-                //   const dateValue = e.target.value
-                //   const dateObj = new Date(dateValue)
-                //   const month = dateObj.getMonth() + 1
-                //   const monthRoman = convertToRoman(month)
-                //   const year = dateObj.getFullYear().toString().slice(-2)
-                //   console.log(monthRoman)
+                onChange={(e) => {
+                  const dateValue = e.target.value
+                  const dateObj = new Date(dateValue)
+                  const month = dateObj.getMonth() + 1
+                  const monthRoman = convertToRoman(month)
+                  const year = dateObj.getFullYear().toString().slice(-2)
+                  console.log(monthRoman)
 
-                //   setFormAdd({ ...formAdd, purchase_date: e.target.value })
-                //   setFormNewCode({ ...formNewCode, month: monthRoman, years: year })
-                // }}
+                  setFormEdit({ ...formEdit, purchase_date: e.target.value })
+                  setFormEditNewCode({ ...formEditNewCode, month: monthRoman, years: year })
+                }}
               />
             </CCol>
 
             {/* Condition */}
             <CCol md={2}>
-              <CFormLabel className="fw-bold">Condition</CFormLabel>
+              <CFormLabel>
+                <div>
+                  <span className="fw-bold">Condition</span>
+                  <span>*</span>
+                </div>
+              </CFormLabel>
               <br />
 
-              <CFormCheck
-                className="text-success"
-                inline
-                type="radio"
-                name="inlineRadioOptions"
-                id="inlineCheckbox1"
-                value="option1"
-                label="Good"
-                // onChange={() => setFormAdd({ ...formAdd, condition: true })}
-              />
+              {formEdit.condition === true ? (
+                <div>
+                  <CFormCheck
+                    className="text-success"
+                    inline
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="inlineCheckbox1"
+                    value="option1"
+                    label="Good"
+                    onChange={() => setFormEdit({ ...formEdit, condition: true })}
+                    defaultChecked
+                  />
 
-              <CFormCheck
-                className="text-danger"
-                inline
-                type="radio"
-                name="inlineRadioOptions"
-                id="inlineCheckbox2"
-                value="option2"
-                label="Damaged"
-                // onChange={() => setFormAdd({ ...formAdd, condition: false })}
-              />
+                  <CFormCheck
+                    className="text-danger"
+                    inline
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="inlineCheckbox2"
+                    value="option2"
+                    label="Damaged"
+                    onChange={() => setFormEdit({ ...formEdit, condition: false })}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <CFormCheck
+                    className="text-success"
+                    inline
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="inlineCheckbox1"
+                    value="option1"
+                    label="Good"
+                    onChange={() => setFormEdit({ ...formEdit, condition: true })}
+                  />
+
+                  <CFormCheck
+                    className="text-danger"
+                    inline
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="inlineCheckbox2"
+                    value="option2"
+                    label="Damaged"
+                    onChange={() => setFormEdit({ ...formEdit, condition: false })}
+                    defaultChecked
+                  />
+                </div>
+              )}
             </CCol>
 
             {/* No Submission */}
@@ -872,10 +1030,15 @@ const Assets = () => {
             </CCol>
 
             {/* Detail */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
-                label="Detail"
-                // onChange={(e) => setFormAdd({ ...formAdd, detail_id: e.target.value })}
+                label={
+                  <div>
+                    <span className="fw-bold">Detail</span>
+                    <span>*</span>
+                  </div>
+                }
+                onChange={(e) => setFormEdit({ ...formEdit, detail_id: e.target.value })}
               >
                 <option hidden>{formEdit.detailName}</option>
                 {detail.map((item, index) => (
@@ -887,10 +1050,15 @@ const Assets = () => {
             </CCol>
 
             {/* Vendor */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
-                label="Vendor"
-                // onChange={(e) => setFormAdd({ ...formAdd, vendor_id: e.target.value })}
+                label={
+                  <div>
+                    <span className="fw-bold">Vendor</span>
+                    <span>*</span>
+                  </div>
+                }
+                onChange={(e) => setFormEdit({ ...formEdit, vendor_id: e.target.value })}
               >
                 <option hidden>{formEdit.vendorName}</option>
 
@@ -903,11 +1071,16 @@ const Assets = () => {
             </CCol>
 
             {/* Division */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormSelect
                 id="inputState"
-                label="Divison"
-                // onChange={(e) => setFormAdd({ ...formAdd, division_id: e.target.value })}
+                label={
+                  <div>
+                    <span className="fw-bold">Division</span>
+                    <span>*</span>
+                  </div>
+                }
+                onChange={(e) => setFormEdit({ ...formEdit, division_id: e.target.value })}
               >
                 <option hidden>{formEdit.divisionName}</option>
                 {division.map((item, index) => (
@@ -919,22 +1092,32 @@ const Assets = () => {
             </CCol>
 
             {/* User */}
-            <CCol md={3} className="fw-bold">
+            <CCol md={3}>
               <CFormInput
                 id="inputUser"
                 value={formEdit.user_asset}
-                label="User"
-                // onChange={(e) => setFormAdd({ ...formAdd, user_asset: e.target.value })}
+                label={
+                  <div>
+                    <span className="fw-bold">User</span>
+                    <span>*</span>
+                  </div>
+                }
+                onChange={(e) => setFormEdit({ ...formEdit, user_asset: e.target.value })}
               />
             </CCol>
 
             {/* Invoice */}
-            <CCol md={6} className="fw-bold">
+            <CCol md={6}>
               <CFormInput
                 id="inputInvoice"
-                label="No. Invoice"
+                label={
+                  <div>
+                    <span className="fw-bold">No. Invoice</span>
+                    <span>*</span>
+                  </div>
+                }
                 value={formEdit.no_invoice}
-                // onChange={(e) => setFormAdd({ ...formAdd, no_invoice: e.target.value })}
+                onChange={(e) => setFormEdit({ ...formEdit, no_invoice: e.target.value })}
               />
             </CCol>
 
@@ -943,7 +1126,7 @@ const Assets = () => {
               <CFormTextarea
                 label="Description"
                 value={formEdit.descriptions}
-                // onChange={(e) => setFormAdd({ ...formAdd, descriptions: e.target.value })}
+                onChange={(e) => setFormEdit({ ...formEdit, descriptions: e.target.value })}
               />
             </CCol>
           </CForm>
@@ -954,23 +1137,26 @@ const Assets = () => {
           </CButton>
           <CButton
             color="primary"
-            // onClick={() =>
-            //   formAdd.category_id === null ||
-            //   formAdd.brand_id === null ||
-            //   formAdd.type === null ||
-            //   formAdd.branch_id === null ||
-            //   formAdd.purchase_date === null ||
-            //   formAdd.condition === null ||
-            //   formAdd.detail_id === null ||
-            //   formAdd.vendor_id === null ||
-            //   formAdd.division_id === null ||
-            //   formAdd.user_asset === null ||
-            //   formAdd.no_invoice === null
-            //     ? addAssetsAlert()
-            //     : submitAdd()
-            // }
+            onClick={() =>
+              formEdit.category_id === null ||
+              formEdit.brand_id === null ||
+              formEdit.type === null ||
+              formEdit.type === '' ||
+              formEdit.branch_id === null ||
+              formEdit.purchase_date === null ||
+              formEdit.condition === null ||
+              formEdit.detail_id === null ||
+              formEdit.vendor_id === null ||
+              formEdit.division_id === null ||
+              formEdit.user_asset === null ||
+              formEdit.user_asset === '' ||
+              formEdit.no_invoice === null ||
+              formEdit.no_invoice === ''
+                ? inputNotComp()
+                : submitEdit()
+            }
           >
-            Create Asset
+            Edit Asset
           </CButton>
         </CModalFooter>
       </CModal>

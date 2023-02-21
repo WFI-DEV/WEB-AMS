@@ -31,6 +31,7 @@ import {
   getDataById,
   updateData,
 } from 'src/axios/admin/master/axiosBrand'
+import { inputNotComp } from 'src/utils/sweetAlert'
 
 const Brand = () => {
   // Get All Data
@@ -41,7 +42,7 @@ const Brand = () => {
 
   // Add Data
   const [formAdd, setFormAdd] = useState({
-    name: '',
+    name: null,
   })
   // Button Submit Add Data
   const submitAdd = () => {
@@ -94,7 +95,13 @@ const Brand = () => {
                     />
                   </CCol>
 
-                  <CButton type="submit" className="mb-3 me-2 " onClick={() => submitAdd()}>
+                  <CButton
+                    type="submit"
+                    className="mb-3 me-2 "
+                    onClick={() =>
+                      formAdd.name === null || formAdd.name === '' ? inputNotComp() : submitAdd()
+                    }
+                  >
                     Add
                   </CButton>
 
@@ -102,7 +109,12 @@ const Brand = () => {
                     type="submit"
                     className="mb-3 text-light"
                     color="danger"
-                    onClick={() => setNewButton(!newButton)}
+                    onClick={() => {
+                      setNewButton(!newButton)
+                      setFormAdd({
+                        name: null,
+                      })
+                    }}
                   >
                     Cancel
                   </CButton>

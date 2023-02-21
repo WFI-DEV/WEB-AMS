@@ -34,6 +34,7 @@ import {
 } from 'src/axios/admin/master/axiosBranch'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
+import { inputNotComp } from 'src/utils/sweetAlert'
 
 const Branch = () => {
   // Get Data Maxiloan
@@ -55,10 +56,12 @@ const Branch = () => {
 
   // Add Data
   const [formAdd, setFormAdd] = useState({
-    BranchName: '',
-    BranchId: '',
-    CodeBranch: '',
+    BranchName: null,
+    BranchId: null,
+    CodeBranch: null,
   })
+  // console.log(formAdd)
+
   // Button Add
   const submitAdd = () => {
     addData(formAdd)
@@ -157,13 +160,32 @@ const Branch = () => {
                     </CCol>
 
                     <CCol xs={12}>
-                      <CButton className="mb-3 me-2 " onClick={() => submitAdd()}>
+                      <CButton
+                        className="mb-3 me-2 "
+                        onClick={() =>
+                          formAdd.BranchName === null ||
+                          formAdd.BranchName === '' ||
+                          formAdd.BranchId === null ||
+                          formAdd.BranchId === '' ||
+                          formAdd.CodeBranch === null ||
+                          formAdd.CodeBranch === ''
+                            ? inputNotComp()
+                            : submitAdd()
+                        }
+                      >
                         Add
                       </CButton>
                       <CButton
                         className="mb-3 text-light"
                         color="danger"
-                        onClick={() => setNewButton(!newButton)}
+                        onClick={() => {
+                          setNewButton(!newButton)
+                          setFormAdd({
+                            BranchName: null,
+                            BranchId: null,
+                            CodeBranch: null,
+                          })
+                        }}
                       >
                         Cancel
                       </CButton>

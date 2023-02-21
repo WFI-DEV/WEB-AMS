@@ -1,9 +1,9 @@
 import Swal from 'sweetalert2'
 
-export const addAssetsAlert = () => {
+export const inputNotComp = () => {
   Swal.fire({
     icon: 'error',
     title: 'Oops...',
-    text: 'Something went wrong!',
+    text: 'Please complete input the content!',
   })
 }

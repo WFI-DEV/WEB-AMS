@@ -4,7 +4,7 @@ import React from 'react'
 const DashboardAdmin = React.lazy(() => import('./views/pages/admin/Dashboard'))
 
 // Assets Admin Import
-const AssetsAdmin = React.lazy(() => import('./views/pages/admin/assets/assets'))
+const AssetsAdmin = React.lazy(() => import('./views/pages/admin/assets/Assets'))
 
 // Master Admin Import
 const CategoryMaster = React.lazy(() => import('./views/pages/admin/master/Category'))

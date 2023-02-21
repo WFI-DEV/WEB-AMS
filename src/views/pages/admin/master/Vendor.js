@@ -33,6 +33,7 @@ import {
   updateData,
 } from 'src/axios/admin/master/axiosVendor'
 import { getAllBranch } from 'src/axios/admin/master/axiosBranch'
+import { inputNotComp } from 'src/utils/sweetAlert'
 
 const Vendor = () => {
   // Get All Data
@@ -43,10 +44,11 @@ const Vendor = () => {
 
   // Add Data
   const [formAdd, setFormAdd] = useState({
-    name: '',
-    BranchId: '',
+    name: null,
+    BranchId: null,
   })
-  console.log(formAdd)
+  // console.log(formAdd)
+
   // Button Submit Add Data
   const submitAdd = () => {
     addData(formAdd)
@@ -125,14 +127,27 @@ const Vendor = () => {
                     </CFormSelect>
                   </CCol>
                   <CCol xs={12}>
-                    <CButton className="mb-3 me-2 " onClick={() => submitAdd()}>
+                    <CButton
+                      className="mb-3 me-2 "
+                      onClick={() =>
+                        formAdd.name === '' || formAdd.name === null || formAdd.BranchId === null
+                          ? inputNotComp()
+                          : submitAdd()
+                      }
+                    >
                       Add
                     </CButton>
 
                     <CButton
                       className="mb-3 text-light"
                       color="danger"
-                      onClick={() => setNewButton(!newButton)}
+                      onClick={() => {
+                        setNewButton(!newButton)
+                        setFormAdd({
+                          name: null,
+                          BranchId: null,
+                        })
+                      }}
                     >
                       Cancel
                     </CButton>
