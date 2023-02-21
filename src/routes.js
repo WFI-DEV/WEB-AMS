@@ -11,10 +11,10 @@ const CategoryMaster = React.lazy(() => import('./views/pages/admin/master/Categ
 const BranchMaster = React.lazy(() => import('./views/pages/admin/master/Branch'))
 const DivisionMaster = React.lazy(() => import('./views/pages/admin/master/Division'))
 const VendorMaster = React.lazy(() => import('./views/pages/admin/master/Vendor'))
-const SubmissionMaster = React.lazy(() => import('./views/pages/admin/master/Submission'))
+const RequestMaster = React.lazy(() => import('./views/pages/admin/master/Request'))
 const UserApproveMaster = React.lazy(() => import('./views/pages/admin/master/UserApprove'))
 const DamageMaster = React.lazy(() => import('./views/pages/admin/master/Damage'))
-const DetailMaster = React.lazy(() => import('./views/pages/admin/master/Detail'))
+const statusAssetsMaster = React.lazy(() => import('./views/pages/admin/master/StatusAssets'))
 const BrandMaster = React.lazy(() => import('./views/pages/admin/master/Brand'))
 
 // Routes Admin
@@ -28,10 +28,10 @@ const routesAdmin = [
   { path: '/master/brand', name: 'BrandhMaster', element: BrandMaster },
   { path: '/master/division', name: 'DivisionMaster', element: DivisionMaster },
   { path: '/master/vendor', name: 'VendorMaster', element: VendorMaster },
-  { path: '/master/submission', name: 'SubmissionMaster', element: SubmissionMaster },
+  { path: '/master/request', name: 'RequestMaster', element: RequestMaster },
   { path: '/master/userapprove', name: 'UserApproveMaster', element: UserApproveMaster },
   { path: '/master/damage', name: 'DamageMaster', element: DamageMaster },
-  { path: '/master/detail', name: 'DetailMaster', element: DetailMaster },
+  { path: '/master/statusassets', name: 'StatusAssetsMaster', element: statusAssetsMaster },
 ]
 
 export default routesAdmin

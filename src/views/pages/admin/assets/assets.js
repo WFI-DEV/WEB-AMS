@@ -33,7 +33,7 @@ import {
 import CIcon from '@coreui/icons-react'
 
 import { getAllCategory } from 'src/axios/admin/master/axiosCategory'
-import { getAllDetail } from 'src/axios/admin/master/axiosDetail'
+import { getAllStatusAssets } from 'src/axios/admin/master/axiosStatusAssets'
 import {
   getAllBranch,
   updateDataBranch,
@@ -65,10 +65,10 @@ const Assets = () => {
   // Modal Add
   const [modalNewAsset, setModalNewAsset] = useState(false)
 
-  // Get Detail Data
-  const [detail, setDetail] = useState([])
+  // Get Status Assets Data
+  const [statusAssets, setStatusAssets] = useState([])
   useEffect(() => {
-    getAllDetail((res) => setDetail(res))
+    getAllStatusAssets((res) => setStatusAssets(res))
   }, [])
 
   // Get Branch Data
@@ -77,7 +77,7 @@ const Assets = () => {
     getAllBranch((res) => setBranch(res))
   }, [])
 
-  // Get Branch Data
+  // Get Brand Data
   const [brand, setBrand] = useState([])
   useEffect(() => {
     getAllBrand((res) => setBrand(res))
@@ -123,8 +123,8 @@ const Assets = () => {
     vendor_id: null,
     user_asset: null,
     no_invoice: null,
-    detail_id: null,
-    no_submission: 'Input by: Admin Pusat',
+    statusAssets_id: null,
+    request_no: 'Input by: Admin Pusat',
     descriptions: '-',
   })
   // console.log(formAdd)
@@ -194,15 +194,16 @@ const Assets = () => {
         vendor_id: res.vendor_id,
         user_asset: res.user_asset,
         no_invoice: res.no_invoice,
-        detail_id: res.detail_id,
-        no_submission: 'Edited by: Admin Pusat',
-        descriptions: '-',
+        statusAssets_id: res.statusAssets_id,
+        request_no: 'Edited by: Admin Pusat',
+        descriptions: res.descriptions,
         brandName: res.brandName,
         categoryName: res.categoryName,
         BranchName: res.BranchName,
-        detailName: res.detailName,
+        statusAssets: res.statusAssets,
         vendorName: res.vendorName,
         divisionName: res.divisionName,
+        vendorBranch: res.vendorBranch,
       })
       setFormEditNewCode({
         no: sliceCode[0],
@@ -365,9 +366,9 @@ const Assets = () => {
                           </div>
 
                           <div>
-                            <div className="font-monospace text-muted small ">Submission:</div>
+                            <div className="font-monospace text-muted small ">Request No:</div>
 
-                            <div>{item.no_submission}</div>
+                            <div>{item.request_no}</div>
                           </div>
                         </div>
                       </CTableDataCell>
@@ -407,9 +408,9 @@ const Assets = () => {
                           </div>
 
                           <div>
-                            <div className="font-monospace text-muted small ">Detail:</div>
+                            <div className="font-monospace text-muted small ">Status:</div>
 
-                            <div>{item.detailName}</div>
+                            <div>{item.statusAssets}</div>
                           </div>
                         </div>
                       </CTableDataCell>
@@ -654,32 +655,32 @@ const Assets = () => {
               />
             </CCol>
 
-            {/* No Submission */}
+            {/* Request No */}
             <CCol md={4}>
               <CFormInput
                 id="inputYears"
                 label={
                   <div>
-                    <span className="fw-bold">No. Submission</span> <span>*</span>
+                    <span className="fw-bold">Request No.</span> <span>*</span>
                   </div>
                 }
                 disabled
-                placeholder="Input by: Admin"
+                value={formAdd.request_no}
               />
             </CCol>
 
-            {/* Detail */}
+            {/* STATUS ASSETS */}
             <CCol md={3}>
               <CFormSelect
                 label={
                   <div>
-                    <span className="fw-bold">Detail</span> <span>*</span>
+                    <span className="fw-bold">Status Assets</span> <span>*</span>
                   </div>
                 }
-                onChange={(e) => setFormAdd({ ...formAdd, detail_id: e.target.value })}
+                onChange={(e) => setFormAdd({ ...formAdd, statusAssets_id: e.target.value })}
               >
                 <option hidden>Choose...</option>
-                {detail.map((item, index) => (
+                {statusAssets.map((item, index) => (
                   <option key={item.name} value={item.id}>
                     {item.name}
                   </option>
@@ -701,7 +702,7 @@ const Assets = () => {
 
                 {vendor.map((item, index) => (
                   <option key={item.id} value={item.id}>
-                    {item.name}
+                    {item.name} - {item.BranchName}
                   </option>
                 ))}
               </CFormSelect>
@@ -781,8 +782,8 @@ const Assets = () => {
                 vendor_id: null,
                 user_asset: null,
                 no_invoice: null,
-                detail_id: null,
-                no_submission: 'Input by: Admin Pusat',
+                statusAssets_id: null,
+                request_no: 'Input by: Admin Pusat',
                 descriptions: '-',
               })
             }}
@@ -799,7 +800,7 @@ const Assets = () => {
               formAdd.branch_id === null ||
               formAdd.purchase_date === null ||
               formAdd.condition === null ||
-              formAdd.detail_id === null ||
+              formAdd.statusAssets_id === null ||
               formAdd.vendor_id === null ||
               formAdd.division_id === null ||
               formAdd.user_asset === null ||
@@ -1019,29 +1020,29 @@ const Assets = () => {
               )}
             </CCol>
 
-            {/* No Submission */}
+            {/* Request No */}
             <CCol md={4} className="fw-bold">
               <CFormInput
-                id="inputYears"
-                label="No. Submission"
-                value={formEdit.no_submission}
+                id="inputRequestNo"
+                label="Request No."
+                value={formEdit.request_no}
                 disabled
               />
             </CCol>
 
-            {/* Detail */}
+            {/* StatusAssets */}
             <CCol md={3}>
               <CFormSelect
                 label={
                   <div>
-                    <span className="fw-bold">Detail</span>
+                    <span className="fw-bold">Status Assets</span>
                     <span>*</span>
                   </div>
                 }
-                onChange={(e) => setFormEdit({ ...formEdit, detail_id: e.target.value })}
+                onChange={(e) => setFormEdit({ ...formEdit, statusAssets_id: e.target.value })}
               >
-                <option hidden>{formEdit.detailName}</option>
-                {detail.map((item, index) => (
+                <option hidden>{formEdit.statusAssets}</option>
+                {statusAssets.map((item, index) => (
                   <option key={item.name} value={item.id}>
                     {item.name}
                   </option>
@@ -1050,7 +1051,7 @@ const Assets = () => {
             </CCol>
 
             {/* Vendor */}
-            <CCol md={3}>
+            <CCol md={4}>
               <CFormSelect
                 label={
                   <div>
@@ -1060,18 +1061,20 @@ const Assets = () => {
                 }
                 onChange={(e) => setFormEdit({ ...formEdit, vendor_id: e.target.value })}
               >
-                <option hidden>{formEdit.vendorName}</option>
+                <option hidden>
+                  {formEdit.vendorName} - {formEdit.vendorBranch}
+                </option>
 
                 {vendor.map((item, index) => (
                   <option key={item.id} value={item.id}>
-                    {item.name}
+                    {item.name} - {item.BranchName}
                   </option>
                 ))}
               </CFormSelect>
             </CCol>
 
             {/* Division */}
-            <CCol md={3}>
+            <CCol md={2}>
               <CFormSelect
                 id="inputState"
                 label={
@@ -1145,7 +1148,7 @@ const Assets = () => {
               formEdit.branch_id === null ||
               formEdit.purchase_date === null ||
               formEdit.condition === null ||
-              formEdit.detail_id === null ||
+              formEdit.statusAssets_id === null ||
               formEdit.vendor_id === null ||
               formEdit.division_id === null ||
               formEdit.user_asset === null ||

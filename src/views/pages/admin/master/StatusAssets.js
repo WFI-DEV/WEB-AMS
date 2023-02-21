@@ -25,19 +25,19 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
 import {
-  getAllDetail,
+  getAllStatusAssets,
   deleteData,
   addData,
   getDataById,
   updateData,
-} from 'src/axios/admin/master/axiosDetail'
+} from 'src/axios/admin/master/axiosStatusAssets'
 import { inputNotComp } from 'src/utils/sweetAlert'
 
-const Detail = () => {
+const StatusAssets = () => {
   // Get All Data
-  const [detail, setDetail] = useState([])
+  const [statusAssets, setStatusAssets] = useState([])
   useEffect(() => {
-    getAllDetail((res) => setDetail(res))
+    getAllStatusAssets((res) => setStatusAssets(res))
   }, [])
 
   // Add Data
@@ -78,20 +78,20 @@ const Detail = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader className="fw-bold">Detail</CCardHeader>
+            <CCardHeader className="fw-bold">Status Assets</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (
                 <CButton color="primary" className="mb-3 " onClick={() => setNewButton(!newButton)}>
                   <CIcon icon={cilPlus} className="me-2" />
-                  New Detail
+                  New Status Assets
                 </CButton>
               ) : (
                 <CContainer>
                   <CCol md={3} className="mb-2 fw-bold">
                     <CFormInput
                       id="inputYears"
-                      label=" Create New Detail"
+                      label=" Create New Status Assets"
                       placeholder="Text Here..."
                       onChange={(e) => setFormAdd({ ...formAdd, name: e.target.value })}
                     />
@@ -129,7 +129,7 @@ const Detail = () => {
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Detail Name</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Status Assets</CTableHeaderCell>
                     {/* <CTableHeaderCell className="text-center">ID</CTableHeaderCell> */}
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
@@ -137,7 +137,7 @@ const Detail = () => {
 
                 {/* Table Body */}
                 <CTableBody>
-                  {detail.map((item, index) => (
+                  {statusAssets.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       {/* No */}
                       <CTableDataCell className="text-start">
@@ -208,7 +208,7 @@ const Detail = () => {
         onClose={() => setEditButton(false)}
       >
         <CModalHeader>
-          <CModalTitle>Edit Detail Name</CModalTitle>
+          <CModalTitle>Edit Status Assets</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CFormInput
@@ -232,4 +232,4 @@ const Detail = () => {
   )
 }
 
-export default Detail
+export default StatusAssets

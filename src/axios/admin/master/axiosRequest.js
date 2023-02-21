@@ -2,9 +2,9 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 
 const baseUrl = 'http://localhost:4409'
-const URL = `${baseUrl}/admin/master/detail`
+const URL = `${baseUrl}/admin/master/request`
 
-const getAllDetail = async (callback) => {
+const getAllData = async (callback) => {
   try {
     let allData = await axios({
       method: 'GET',
@@ -85,4 +85,4 @@ const updateData = async (id, form) => {
   }
 }
 
-export { getAllDetail, getDataById, addData, deleteData, updateData }
+export { getAllData, getDataById, addData, deleteData, updateData }

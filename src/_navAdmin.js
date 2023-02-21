@@ -1,6 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { cilMonitor, cilSpeedometer, cilStorage } from '@coreui/icons'
+import { cilMonitor, cilNoteAdd, cilSpeedometer, cilStorage } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
@@ -14,34 +14,27 @@ const _nav = [
       text: 'NEW',
     },
   },
-  // {
-  //   component: CNavTitle,
-  //   name: 'Submissions',
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'All Submissions',
-  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Category',
-  //       to: 'submissions/allasets/category',
-  //     },
-  //   ],
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Branch Submissions',
-  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Category',
-  //       to: 'submission/branchassets/category',
-  //     },
-  //   ],
-  // },
+  {
+    component: CNavTitle,
+    name: 'Request',
+  },
+  {
+    component: CNavGroup,
+    name: 'Request',
+    icon: <CIcon icon={cilNoteAdd} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Request Purchase New',
+        to: 'asdsa',
+      },
+      {
+        component: CNavItem,
+        name: 'Request Repair',
+        to: 'asdsa',
+      },
+    ],
+  },
 
   {
     component: CNavTitle,
@@ -93,13 +86,13 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Detail',
-        to: 'master/detail',
+        name: 'Status Assets',
+        to: 'master/statusassets',
       },
       {
         component: CNavItem,
-        name: 'Submission',
-        to: 'master/submission',
+        name: 'Request',
+        to: 'master/request',
       },
       {
         component: CNavItem,

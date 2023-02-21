@@ -30,14 +30,14 @@ import {
   addData,
   getDataById,
   updateData,
-} from 'src/axios/admin/master/axiosSubmission'
+} from 'src/axios/admin/master/axiosRequest'
 import { inputNotComp } from 'src/utils/sweetAlert'
 
-const Submission = () => {
+const Request = () => {
   // Get All Data
-  const [submission, setSubmission] = useState([])
+  const [request, setRequest] = useState([])
   useEffect(() => {
-    getAllData((res) => setSubmission(res))
+    getAllData((res) => setRequest(res))
   }, [])
 
   // Add Data
@@ -76,27 +76,26 @@ const Submission = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader className="fw-bold">Submission</CCardHeader>
+            <CCardHeader className="fw-bold">Request</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (
                 <CButton color="primary" className="mb-3 " onClick={() => setNewButton(!newButton)}>
                   <CIcon icon={cilPlus} className="me-2" />
-                  New Submission
+                  New Request
                 </CButton>
               ) : (
                 <CContainer>
                   <CCol md={3} className="mb-2 fw-bold">
                     <CFormInput
-                      id="inputYears"
-                      label=" Create New Submission"
+                      id="inputRequest"
+                      label=" Create New Request"
                       placeholder="Text Here..."
                       onChange={(e) => setFormAdd({ ...formAdd, name: e.target.value })}
                     />
                   </CCol>
 
                   <CButton
-                    type="submit"
                     className="mb-3 me-2 "
                     onClick={() =>
                       formAdd.name === null || formAdd.name === '' ? inputNotComp() : submitAdd()
@@ -127,14 +126,14 @@ const Submission = () => {
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell className="text-start">No</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Submission Name</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Request Type</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
 
                 {/* Table Body */}
                 <CTableBody>
-                  {submission.map((item, index) => (
+                  {request.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       {/* No */}
                       <CTableDataCell className="text-start">
@@ -176,7 +175,7 @@ const Submission = () => {
                           color="info"
                           size="sm"
                           className="text-light"
-                          onClick={() => (setEditButton(!editButton), btnEdit(item.id))}
+                          onClick={() => setEditButton(!editButton, btnEdit(item.id))}
                         >
                           <CIcon icon={cilPencil} />
                         </CButton>
@@ -199,7 +198,7 @@ const Submission = () => {
         onClose={() => setEditButton(false)}
       >
         <CModalHeader>
-          <CModalTitle>Edit Submission Name</CModalTitle>
+          <CModalTitle>Edit Request Name</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CFormInput
@@ -223,4 +222,4 @@ const Submission = () => {
   )
 }
 
-export default Submission
+export default Request
