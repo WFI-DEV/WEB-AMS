@@ -40,7 +40,7 @@ import {
   getDataBranchById,
 } from 'src/axios/admin/master/axiosBranch'
 import { getAllBrand } from 'src/axios/admin/master/axiosBrand'
-import { getAllVendor } from 'src/axios/admin/master/axiosVendor'
+import { getAllVendor, getSearchVendor } from 'src/axios/admin/master/axiosVendor'
 import { getAllDivision } from 'src/axios/admin/master/axiosDivision'
 import {
   getAllAssets,
@@ -131,11 +131,11 @@ const Assets = () => {
 
   const [branchId, setBranchId] = useState()
 
-  // Edit Seq No Branch
+  // Edit Seq No Assets
   const [formBranch, setFormBranch] = useState({})
 
-  const [formEditSNBranch, setFormEditSNBranch] = useState('')
-  // console.log(formEditSNBranch)
+  const [formEditSABranch, setFormEditSABranch] = useState('')
+  // console.log(formEditSABranch)
 
   const btnEditBranch = (id) => {
     // console.log(id)
@@ -146,7 +146,8 @@ const Assets = () => {
         BranchName: res.BranchName,
         BranchId: res.BranchId,
         CodeBranch: res.CodeBranch,
-        SeqNo: res.SeqNo,
+        SeqNoAst: res.SeqNoAst,
+        SeqNoReq: res.SeqNoReq,
       })
     })
   }
@@ -154,9 +155,7 @@ const Assets = () => {
   // Button Submit Add New Asset
   const submitAdd = () => {
     addData({ ...formAdd, code_asset: generateCodeAssets(formNewCode) })
-    updateDataBranch(branchId, { ...formBranch, SeqNo: formEditSNBranch })
-    // console.log(generateCodeAssets(formNewCode))
-    // console.log(formBranch({ ...formBranch, SeqNo: formEditSNBranch }))
+    updateDataBranch(branchId, { ...formBranch, SeqNoAst: formEditSABranch })
   }
 
   // FORM EDIT ASSET
@@ -220,6 +219,16 @@ const Assets = () => {
     // console.log({ ...formEdit, code_asset: generateCodeAssets(formEditNewCode) })
   }
 
+  // Get Search Vendor By Branch Id
+
+  const [vendorSearch, setVendorSearch] = useState([])
+  // console.log(vendorSearch)
+
+  const btnGetVendor = (id) => {
+    // console.log(id)
+    getSearchVendor(id, (res) => setVendorSearch(res))
+  }
+
   // Modal Edit
   const [editButton, setEditButton] = useState(false)
 
@@ -265,7 +274,7 @@ const Assets = () => {
                     <CFormSelect>
                       <option>All</option>
                       {category.map((item, index) => (
-                        <option key={index} value={item.id}>
+                        <option key={item.id} value={item.id}>
                           {item.name}
                         </option>
                       ))}
@@ -276,7 +285,7 @@ const Assets = () => {
                     <CFormSelect>
                       <option>All</option>
                       {branch.map((item, index) => (
-                        <option key={index} value={item.id}>
+                        <option key={item.id} value={item.id}>
                           {item.BranchName}
                         </option>
                       ))}
@@ -342,7 +351,7 @@ const Assets = () => {
                           <AdvReadMoreMore
                             linesToShow={1}
                             text={item.descriptions}
-                            checkFor={100}
+                            checkFor={40}
                             readMoreText="read more.."
                             readLessText="read less.."
                           />
@@ -450,6 +459,7 @@ const Assets = () => {
                             onClick={() => {
                               setEditButton(!editButton)
                               btnEdit(item.id)
+                              btnGetVendor(item.branch_id)
                             }}
                           >
                             <CIcon icon={cilPencil} />
@@ -516,9 +526,7 @@ const Assets = () => {
                 }}
                 required
               >
-                <option hidden value="">
-                  Choose...
-                </option>
+                <option hidden>Choose...</option>
                 {category.map((item, index) => (
                   <option key={item.id} value={JSON.stringify(item)}>
                     {item.name}
@@ -537,11 +545,9 @@ const Assets = () => {
                 }
                 onChange={(e) => setFormAdd({ ...formAdd, brand_id: e.target.value })}
               >
-                <option selected="" value="" hidden>
-                  Choose...
-                </option>
+                <option hidden>Choose...</option>
                 {brand.map((item, index) => (
-                  <option key={item.name} value={item.id}>
+                  <option key={item.id} value={item.id}>
                     {item.name}
                   </option>
                 ))}
@@ -570,16 +576,21 @@ const Assets = () => {
                     <span className="fw-bold">Branch</span> <span>*</span>
                   </div>
                 }
-                onClick={(e) => btnEditBranch(JSON.parse(e.target.value).id)}
+                onClick={(e) => {
+                  btnEditBranch(JSON.parse(e.target.value).id)
+                  btnGetVendor(JSON.parse(e.target.value).BranchId)
+                }}
                 onChange={(e) => {
                   setFormAdd({ ...formAdd, branch_id: JSON.parse(e.target.value).BranchId })
                   setFormNewCode({
                     ...formNewCode,
                     branchCode: JSON.parse(e.target.value).CodeBranch,
-                    no: (Number(JSON.parse(e.target.value).SeqNo) + 1).toString().padStart(3, '0'),
+                    no: (Number(JSON.parse(e.target.value).SeqNoAst) + 1)
+                      .toString()
+                      .padStart(3, '0'),
                   })
-                  setFormEditSNBranch(
-                    (Number(JSON.parse(e.target.value).SeqNo) + 1).toString().padStart(3, '0'),
+                  setFormEditSABranch(
+                    (Number(JSON.parse(e.target.value).SeqNoAst) + 1).toString().padStart(3, '0'),
                   )
                   // console.log(
                   //   (Number(JSON.parse(e.target.value).SeqNo) + 1).toString().padStart(3, '0'),
@@ -613,7 +624,7 @@ const Assets = () => {
                   const month = dateObj.getMonth() + 1
                   const monthRoman = convertToRoman(month)
                   const year = dateObj.getFullYear().toString().slice(-2)
-                  console.log(monthRoman)
+                  // console.log(monthRoman)
 
                   setFormAdd({ ...formAdd, purchase_date: e.target.value })
                   setFormNewCode({ ...formNewCode, month: monthRoman, years: year })
@@ -690,22 +701,37 @@ const Assets = () => {
 
             {/* Vendor */}
             <CCol md={3}>
-              <CFormSelect
-                label={
-                  <div>
-                    <span className="fw-bold">Vendor</span> <span>*</span>
-                  </div>
-                }
-                onChange={(e) => setFormAdd({ ...formAdd, vendor_id: e.target.value })}
-              >
-                <option hidden>Choose...</option>
+              {vendorSearch.length !== 0 ? (
+                <CFormSelect
+                  label={
+                    <div>
+                      <span className="fw-bold">Vendor</span> <span>*</span>
+                    </div>
+                  }
+                  onChange={(e) => setFormAdd({ ...formAdd, vendor_id: e.target.value })}
+                >
+                  <option hidden>Choose...</option>
 
-                {vendor.map((item, index) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name} - {item.BranchName}
-                  </option>
-                ))}
-              </CFormSelect>
+                  {vendorSearch.map((item, index) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </CFormSelect>
+              ) : (
+                <CFormSelect
+                  disabled
+                  label={
+                    <div>
+                      <span className="fw-bold">Vendor</span> <span>*</span>
+                    </div>
+                  }
+                >
+                  <CTooltip content="branch">
+                    <option hidden>branch dont have a vendor...</option>
+                  </CTooltip>
+                </CFormSelect>
+              )}
             </CCol>
 
             {/* Division */}
@@ -827,7 +853,7 @@ const Assets = () => {
         {/* Modal Body */}
         <CModalBody>
           {/* Form */}
-          <CForm className="row g-3 needs-validation">
+          <CForm className="row g-3">
             {/* Code Asset*/}
             <CFormLabel>
               <CCol md={3} className="float-end border-bottom border-dark">
@@ -855,9 +881,7 @@ const Assets = () => {
                 }}
                 required
               >
-                <option hidden value="">
-                  {formEdit.categoryName}
-                </option>
+                <option hidden>{formEdit.categoryName}</option>
                 {category.map((item, index) => (
                   <option key={item.id} value={JSON.stringify(item)}>
                     {item.name}
@@ -877,9 +901,7 @@ const Assets = () => {
                 }
                 onChange={(e) => setFormEdit({ ...formEdit, brand_id: e.target.value })}
               >
-                <option selected="" value="" hidden>
-                  {formEdit.brandName}
-                </option>
+                <option hidden>{formEdit.brandName}</option>
                 {brand.map((item, index) => (
                   <option key={item.name} value={item.id}>
                     {item.name}
@@ -1061,13 +1083,11 @@ const Assets = () => {
                 }
                 onChange={(e) => setFormEdit({ ...formEdit, vendor_id: e.target.value })}
               >
-                <option hidden>
-                  {formEdit.vendorName} - {formEdit.vendorBranch}
-                </option>
+                <option hidden>{formEdit.vendorName}</option>
 
-                {vendor.map((item, index) => (
+                {vendorSearch.map((item, index) => (
                   <option key={item.id} value={item.id}>
-                    {item.name} - {item.BranchName}
+                    {item.name}
                   </option>
                 ))}
               </CFormSelect>
@@ -1087,7 +1107,7 @@ const Assets = () => {
               >
                 <option hidden>{formEdit.divisionName}</option>
                 {division.map((item, index) => (
-                  <option key={index} value={item.id}>
+                  <option key={item.id} value={item.id}>
                     {item.name}
                   </option>
                 ))}

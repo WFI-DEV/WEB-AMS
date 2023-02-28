@@ -80,7 +80,8 @@ const Branch = () => {
         BranchName: res.BranchName,
         BranchId: res.BranchId,
         CodeBranch: res.CodeBranch,
-        SeqNo: res.SeqNo,
+        SeqNoAst: res.SeqNoAst,
+        SeqNoReq: res.SeqNoReq,
       })
     })
   }
@@ -204,7 +205,8 @@ const Branch = () => {
                     <CTableHeaderCell className="text-center">Branch ID</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Branch Name</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Code Branch</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Sequence No</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Sequence Assets</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Sequence Request</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -240,9 +242,14 @@ const Branch = () => {
                         <div>{item.CodeBranch}</div>
                       </CTableDataCell>
 
-                      {/* Sequence No */}
+                      {/* Sequence Assets */}
                       <CTableDataCell className="text-center">
-                        <div>{item.SeqNo}</div>
+                        <div>{item.SeqNoAst}</div>
+                      </CTableDataCell>
+
+                      {/* Sequence Request */}
+                      <CTableDataCell className="text-center">
+                        <div>{item.SeqNoReq}</div>
                       </CTableDataCell>
 
                       {/* Actions */}
@@ -413,14 +420,24 @@ const Branch = () => {
             onChange={(e) => setFormEdit({ ...formEdit, CodeBranch: e.target.value })}
           />
 
-          {/* SeqNo */}
+          {/* SeqNo Ast */}
           <CFormInput
-            label="Sequence No"
+            label="Sequence Assets"
             type="text"
             id="inputEditSubmission"
             className="form-control mb-1 "
-            value={formEdit.SeqNo}
-            onChange={(e) => setFormEdit({ ...formEdit, SeqNo: e.target.value })}
+            value={formEdit.SeqNoAst}
+            onChange={(e) => setFormEdit({ ...formEdit, SeqNoAst: e.target.value })}
+          />
+
+          {/* SeqNo Req */}
+          <CFormInput
+            label="Sequence Request"
+            type="text"
+            id="inputEditSubmission"
+            className="form-control mb-1 "
+            value={formEdit.SeqNoReq}
+            onChange={(e) => setFormEdit({ ...formEdit, SeqNoReq: e.target.value })}
           />
         </CModalBody>
         <CModalFooter>

@@ -25,19 +25,19 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilPlus, cilTrash } from '@coreui/icons'
 import {
-  getAllData,
+  getAllRequestType,
   deleteData,
   addData,
   getDataById,
   updateData,
-} from 'src/axios/admin/master/axiosRequest'
+} from 'src/axios/admin/master/axiosRequestType'
 import { inputNotComp } from 'src/utils/sweetAlert'
 
-const Request = () => {
+const RequestType = () => {
   // Get All Data
   const [request, setRequest] = useState([])
   useEffect(() => {
-    getAllData((res) => setRequest(res))
+    getAllRequestType((res) => setRequest(res))
   }, [])
 
   // Add Data
@@ -76,20 +76,20 @@ const Request = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader className="fw-bold">Request</CCardHeader>
+            <CCardHeader className="fw-bold">Request Type</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               {newButton ? (
                 <CButton color="primary" className="mb-3 " onClick={() => setNewButton(!newButton)}>
                   <CIcon icon={cilPlus} className="me-2" />
-                  New Request
+                  New Request Type
                 </CButton>
               ) : (
                 <CContainer>
                   <CCol md={3} className="mb-2 fw-bold">
                     <CFormInput
                       id="inputRequest"
-                      label=" Create New Request"
+                      label=" Create New Request Type"
                       placeholder="Text Here..."
                       onChange={(e) => setFormAdd({ ...formAdd, name: e.target.value })}
                     />
@@ -198,7 +198,7 @@ const Request = () => {
         onClose={() => setEditButton(false)}
       >
         <CModalHeader>
-          <CModalTitle>Edit Request Name</CModalTitle>
+          <CModalTitle>Edit Request Type</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CFormInput
@@ -222,4 +222,4 @@ const Request = () => {
   )
 }
 
-export default Request
+export default RequestType

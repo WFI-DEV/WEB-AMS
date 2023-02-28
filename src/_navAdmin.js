@@ -1,6 +1,13 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { cilMonitor, cilNoteAdd, cilSpeedometer, cilStorage } from '@coreui/icons'
+import {
+  cilDescription,
+  cilHealing,
+  cilMonitor,
+  cilNoteAdd,
+  cilSpeedometer,
+  cilStorage,
+} from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
@@ -19,22 +26,43 @@ const _nav = [
     name: 'Request',
   },
   {
-    component: CNavGroup,
-    name: 'Request',
-    icon: <CIcon icon={cilNoteAdd} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Request Purchase New',
-        to: 'asdsa',
-      },
-      {
-        component: CNavItem,
-        name: 'Request Repair',
-        to: 'asdsa',
-      },
-    ],
+    component: CNavItem,
+    name: 'All Request',
+    to: '/admin/request/allrequest',
+    icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
   },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Purchase New',
+  //   icon: <CIcon icon={cilNoteAdd} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Request Purchase New',
+  //       to: '/admin/request/requestpurchase',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Create',
+  //       to: '/admin/request/requestpurchasecreate',
+  //     },
+  //   ],
+  // },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Repair',
+  //   icon: <CIcon icon={cilHealing} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Repair',
+  //       to: '/admin/request/requestrepair',
+  //     },
+  //   ],
+  // },
 
   {
     component: CNavTitle,
@@ -91,8 +119,13 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Request',
-        to: 'master/request',
+        name: 'Request Type',
+        to: 'master/requesttype',
+      },
+      {
+        component: CNavItem,
+        name: 'Status Request',
+        to: 'master/statusrequest',
       },
       {
         component: CNavItem,

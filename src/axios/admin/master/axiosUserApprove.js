@@ -29,6 +29,41 @@ const getDataById = async (id, cb) => {
   }
 }
 
+const getUserApprove1ByBranchId = async (id, cb) => {
+  try {
+    let dataById = await axios({
+      method: 'GET',
+      url: `${URL}/1/${id}`,
+    })
+    cb(dataById.data.data)
+  } catch (err) {
+    console.log(err.response.data)
+  }
+}
+
+const getUserApprove2ByBranchId = async (id, cb) => {
+  try {
+    let dataById = await axios({
+      method: 'GET',
+      url: `${URL}/2/${id}`,
+    })
+    cb(dataById.data.data)
+  } catch (err) {
+    console.log(err.response.data)
+  }
+}
+
+const getUserApprove3ByBranchId = async (id, cb) => {
+  try {
+    let dataById = await axios({
+      method: 'GET',
+      url: `${URL}/3/${id}`,
+    })
+    cb(dataById.data.data)
+  } catch (err) {
+    console.log(err.response.data)
+  }
+}
 const addData = async (form) => {
   try {
     await axios({
@@ -85,4 +120,13 @@ const updateData = async (id, form) => {
   }
 }
 
-export { getAllData, getDataById, addData, deleteData, updateData }
+export {
+  getAllData,
+  getDataById,
+  addData,
+  deleteData,
+  updateData,
+  getUserApprove1ByBranchId,
+  getUserApprove2ByBranchId,
+  getUserApprove3ByBranchId,
+}

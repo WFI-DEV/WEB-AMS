@@ -2,9 +2,9 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 
 const baseUrl = 'http://localhost:4409'
-const URL = `${baseUrl}/admin/master/vendor`
+const URL = `${baseUrl}/admin/request/`
 
-const getAllVendor = async (callback) => {
+const getAllRequest = async (callback) => {
   try {
     let allData = await axios({
       method: 'GET',
@@ -29,13 +29,12 @@ const getDataById = async (id, cb) => {
   }
 }
 
-const getSearchVendor = async (id, cb) => {
+const getDataByReqNo = async (id, cb) => {
   try {
     let dataById = await axios({
       method: 'GET',
-      url: `${URL}/search?BranchId=${id}`,
+      url: `${URL}reqno/${id}`,
     })
-
     cb(dataById.data.data)
   } catch (err) {
     console.log(err.response.data)
@@ -49,13 +48,7 @@ const addData = async (form) => {
       url: URL,
       data: form,
     })
-    Swal.fire('Create', 'Create Success', 'success').then((res) => {
-      if (res.isConfirmed) {
-        window.location.reload(true)
-      } else {
-        window.location.reload(true)
-      }
-    })
+    Swal.fire('Create', 'Create Success', 'success')
   } catch (err) {
     console.log(err.response.data)
   }
@@ -98,4 +91,4 @@ const updateData = async (id, form) => {
   }
 }
 
-export { getAllVendor, getDataById, addData, deleteData, updateData, getSearchVendor }
+export { getAllRequest, getDataById, addData, deleteData, updateData, getDataByReqNo }
