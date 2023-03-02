@@ -7,3 +7,11 @@ export const inputNotComp = () => {
     text: 'Please complete input the content!',
   })
 }
+
+export const submitReqAlert = () => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: 'No Assets Data Request !',
+  })
+}

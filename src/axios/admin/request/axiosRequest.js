@@ -72,11 +72,11 @@ const deleteData = async (id) => {
   }
 }
 
-const updateData = async (id, form) => {
+const updateDataRequest = async (id, form) => {
   try {
     await axios({
       method: 'PUT',
-      url: `${URL}/${id}`,
+      url: `${URL}${id}`,
       data: form,
     })
     Swal.fire('Update', 'Update Success', 'success').then((res) => {
@@ -91,4 +91,4 @@ const updateData = async (id, form) => {
   }
 }
 
-export { getAllRequest, getDataById, addData, deleteData, updateData, getDataByReqNo }
+export { getAllRequest, getDataById, addData, deleteData, updateDataRequest, getDataByReqNo }

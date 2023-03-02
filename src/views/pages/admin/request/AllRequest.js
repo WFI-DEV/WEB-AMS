@@ -41,7 +41,11 @@ import {
   CTableRow,
   CTooltip,
 } from '@coreui/react'
-import { getAllRequest } from 'src/axios/admin/request/axiosRequest'
+import {
+  getAllRequest,
+  updateDataRequest,
+  getDataByReqNo,
+} from 'src/axios/admin/request/axiosRequest'
 import { AdvReadMoreMore } from 'read-more-more'
 import { getDataByReqNoDetail } from 'src/axios/admin/request/axiosRequestDetail'
 
@@ -55,12 +59,113 @@ const AllRequest = () => {
 
   // Get Request Detail
   const [dataReqNoDetail, setDataReqNoDetail] = useState([])
-  console.log(dataReqNoDetail)
+  // console.log(dataReqNoDetail)
 
   const btnReqDetail = (code) => {
     // console.log(code)
     getDataByReqNoDetail(code, (res) => {
       setDataReqNoDetail(res)
+    })
+  }
+
+  // Edit Request Status
+
+  const btnEditReqAprove1 = (code, id) => {
+    getDataByReqNo(code, (res) => {
+      updateDataRequest(id, {
+        BranchId: res.BranchId,
+        RequestNo: res.requestNo,
+        RequestTypeId: res.requestTypeId,
+        CreatedDate: res.createdDate,
+        FinishDate: res.finishDate,
+        RequestStatusId: 3,
+        UserApprove1Id: res.userApprove1Id,
+        UserApprove2Id: res.userApprove2Id,
+        UserApprove3Id: res.userApprove3Id,
+        IsApprove1: true,
+        IsApprove2: res.isApprove2,
+        IsApprove3: res.isApprove3,
+        Descriptions: res.descriptions,
+      })
+    })
+  }
+  const btnEditReqAprove1Null = (code, id) => {
+    getDataByReqNo(code, (res) => {
+      updateDataRequest(id, {
+        BranchId: res.BranchId,
+        RequestNo: res.requestNo,
+        RequestTypeId: res.requestTypeId,
+        CreatedDate: res.createdDate,
+        FinishDate: res.finishDate,
+        RequestStatusId: 5,
+        UserApprove1Id: res.userApprove1Id,
+        UserApprove2Id: res.userApprove2Id,
+        UserApprove3Id: res.userApprove3Id,
+        IsApprove1: true,
+        IsApprove2: res.isApprove2,
+        IsApprove3: res.isApprove3,
+        Descriptions: res.descriptions,
+      })
+    })
+  }
+
+  const btnEditReqAprove2 = (code, id) => {
+    getDataByReqNo(code, (res) => {
+      updateDataRequest(id, {
+        BranchId: res.BranchId,
+        RequestNo: res.requestNo,
+        RequestTypeId: res.requestTypeId,
+        CreatedDate: res.createdDate,
+        FinishDate: res.finishDate,
+        RequestStatusId: 4,
+        UserApprove1Id: res.userApprove1Id,
+        UserApprove2Id: res.userApprove2Id,
+        UserApprove3Id: res.userApprove3Id,
+        IsApprove1: res.isApprove1,
+        IsApprove2: true,
+        IsApprove3: res.isApprove3,
+        Descriptions: res.descriptions,
+      })
+    })
+  }
+
+  const btnEditReqAprove2Null = (code, id) => {
+    getDataByReqNo(code, (res) => {
+      updateDataRequest(id, {
+        BranchId: res.BranchId,
+        RequestNo: res.requestNo,
+        RequestTypeId: res.requestTypeId,
+        CreatedDate: res.createdDate,
+        FinishDate: res.finishDate,
+        RequestStatusId: 5,
+        UserApprove1Id: res.userApprove1Id,
+        UserApprove2Id: res.userApprove2Id,
+        UserApprove3Id: res.userApprove3Id,
+        IsApprove1: res.isApprove1,
+        IsApprove2: true,
+        IsApprove3: res.isApprove3,
+        Descriptions: res.descriptions,
+      })
+    })
+  }
+
+  const btnEditReqAprove3 = (code, id) => {
+    getDataByReqNo(code, (res) => {
+      updateDataRequest(id, {
+        BranchId: res.BranchId,
+        RequestNo: res.requestNo,
+        RequestTypeId: res.requestTypeId,
+        CreatedDate: res.createdDate,
+        FinishDate: res.finishDate,
+        RequestStatusId: 5,
+        UserApprove1Id: res.userApprove1Id,
+        UserApprove2Id: res.userApprove2Id,
+        UserApprove3Id: res.userApprove3Id,
+        IsApprove1: res.isApprove1,
+        IsApprove2: res.isApprove2,
+        IsApprove3: true,
+        Descriptions: res.descriptions,
+      })
     })
   }
 
@@ -105,9 +210,7 @@ const AllRequest = () => {
                         </CButton>
                       </CTooltip>
                       {/* Category */}
-                      <CInputGroupText className="ms-1 text-white bg-dark">
-                        Category :
-                      </CInputGroupText>
+                      <CInputGroupText className="ms-1 text-white bg-dark">Type :</CInputGroupText>
                       <CFormSelect>
                         <option>All</option>
                         {/* {category.map((item, index) => (
@@ -131,12 +234,10 @@ const AllRequest = () => {
                       </CFormSelect>
                       {/* Conditions */}
                       <CInputGroupText className="ms-1 bg-dark text-white">
-                        Conditions :
+                        Status :
                       </CInputGroupText>
                       <CFormSelect>
                         <option>All</option>
-                        <option value="true">Good</option>
-                        <option value="false">Damaged</option>
                       </CFormSelect>
                     </CInputGroup>
                   </CCol>
@@ -151,7 +252,7 @@ const AllRequest = () => {
                       <CTableHeaderCell className="text-center">Request</CTableHeaderCell>
                       <CTableHeaderCell className="text-center">Request Type</CTableHeaderCell>
                       <CTableHeaderCell className="text-center">User Approve</CTableHeaderCell>
-                      <CTableHeaderCell className="text-start">Status</CTableHeaderCell>
+                      <CTableHeaderCell className="text-center">Status</CTableHeaderCell>
                       <CTableHeaderCell className="text-center">Request Detail</CTableHeaderCell>
                       <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
                     </CTableRow>
@@ -262,7 +363,7 @@ const AllRequest = () => {
                           </CTableDataCell>
 
                           {/* STATUS */}
-                          <CTableDataCell>
+                          <CTableDataCell className="text-center">
                             <div>{item.reqStatus}</div>
                           </CTableDataCell>
 
@@ -283,27 +384,64 @@ const AllRequest = () => {
 
                           {/* Actions */}
                           <CTableDataCell className="text-center ">
-                            <CButton
-                              color="info"
-                              size="sm"
-                              className="text-light"
-                              onClick={
-                                () =>
+                            {/* IF Status = created */}
+                            {item.requestStatusId === 1 ? (
+                              <CButton
+                                color="info"
+                                size="sm"
+                                className="text-light"
+                                onClick={() =>
                                   item.requestTypeId === 5
                                     ? navigate(`/admin/request/purchase/${item.requestNo}`)
                                     : item.requestTypeId === 6
                                     ? navigate(`/admin/request/repair/${item.requestNo}`)
                                     : ''
-                                // (if (formAddRequest.RequestTypeId === 5) {
-                                //   navigate(`/admin/request/purchase/${generateCodeAssets(formReqNo)}`)
-                                // }
-                                // if (formAddRequest.RequestTypeId === 6) {
-                                //   navigate(`/admin/request/repair/${generateCodeAssets(formReqNo)}`)
-                                // })
-                              }
-                            >
-                              <CIcon icon={cilPencil} />
-                            </CButton>
+                                }
+                              >
+                                <CIcon icon={cilPencil} />
+                              </CButton>
+                            ) : item.requestStatusId === 2 ? (
+                              // IF STATUS === SUBMITTED
+                              <div>
+                                <div className="fw-bold mb-2">Approval 1</div>
+                                <CFormCheck
+                                  id="flexCheckDefault"
+                                  label={item.userApproveName1}
+                                  onClick={() =>
+                                    item.userApprove2Id === null && item.isApprove2 === null
+                                      ? btnEditReqAprove1Null(item.requestNo, item.id)
+                                      : btnEditReqAprove1(item.requestNo, item.id)
+                                  }
+                                />
+                              </div>
+                            ) : item.requestStatusId === 3 ? (
+                              // IF STATUS === APPROVED 1
+
+                              <div>
+                                <div className="fw-bold mb-2">Approval 2</div>
+                                <CFormCheck
+                                  id="flexCheckDefault"
+                                  label={item.userApproveName2}
+                                  onClick={() =>
+                                    item.userApprove3Id === null && item.isApprove3 === null
+                                      ? btnEditReqAprove2Null(item.requestNo, item.id)
+                                      : btnEditReqAprove2(item.requestNo, item.id)
+                                  }
+                                />
+                              </div>
+                            ) : item.requestStatusId === 4 ? (
+                              // IF STATUS === APPROVED 2
+                              <div>
+                                <div className="fw-bold mb-2">Approval 3</div>
+                                <CFormCheck
+                                  id="flexCheckDefault"
+                                  label={item.userApproveName3}
+                                  onClick={() => btnEditReqAprove3(item.requestNo, item.id)}
+                                />
+                              </div>
+                            ) : (
+                              <div>Approved All</div>
+                            )}
                           </CTableDataCell>
                         </CTableRow>
                       ))
