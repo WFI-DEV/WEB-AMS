@@ -66,30 +66,12 @@ import { getAllDivision } from 'src/axios/admin/master/axiosDivision'
 import { getSearchVendor } from 'src/axios/admin/master/axiosVendor'
 
 const CreateReqPurchase = () => {
-  // Get All Branch
+  const navigate = useNavigate()
+
   const [branch, setBranch] = useState([])
-  useEffect(() => {
-    getAllBranch((res) => setBranch(res))
-  }, [])
-  // Get All CATEGORy
   const [category, setCategory] = useState([])
-  useEffect(() => {
-    getAllCategory((res) => setCategory(res))
-  }, [])
-
-  // Get All BRAND
   const [brand, setBrand] = useState([])
-  useEffect(() => {
-    getAllBrand((res) => setBrand(res))
-  }, [])
-
-  // Get All Division
   const [division, setDivision] = useState([])
-  useEffect(() => {
-    getAllDivision((res) => setDivision(res))
-  }, [])
-
-  // Form Request No
   const [formReqNo, setFormReqNo] = useState({
     no: '',
     branchCode: '',
@@ -97,20 +79,7 @@ const CreateReqPurchase = () => {
     month: '',
     years: '',
   })
-  // console.log(formReqNo)
-  // Req Type String
-
-  const generateReqNo = generateCodeAssets(formReqNo)
-
-  // Get REQUEST by REQNO DETAIL
   const [dataReqNoDetail, setDataReqNoDetail] = useState([])
-  const btnGetReqNoDetail = () => {
-    getDataByReqNoDetail(generateReqNo, (res) => {
-      setDataReqNoDetail(res)
-    })
-  }
-  console.log(dataReqNoDetail)
-
   const [userApprove1, setUserApprove1] = useState({})
   const [userApprove2, setUserApprove2] = useState({})
   const [userApprove3, setUserApprove3] = useState({})
@@ -119,33 +88,6 @@ const CreateReqPurchase = () => {
     bulan: null,
     tahun: null,
   })
-
-  const btnUserApprove = (id) => {
-    // console.log(id)
-    getUserApprove1ByBranchId(id, (res) => setUserApprove1(res))
-    getUserApprove2ByBranchId(id, (res) => setUserApprove2(res))
-    getUserApprove3ByBranchId(id, (res) => setUserApprove3(res))
-  }
-
-  // Add Request
-  // Draft
-  const [formAddRequestDraft, setFormAddRequestDraft] = useState({
-    BranchId: null,
-    RequestNo: null,
-    RequestTypeId: 5,
-    CreatedDate: null,
-    FinishDate: null,
-    RequestStatusId: 1,
-    UserApprove1Id: null,
-    UserApprove2Id: null,
-    UserApprove3Id: null,
-    IsApprove1: null,
-    IsApprove2: null,
-    IsApprove3: null,
-    Descriptions: null,
-  })
-  // console.log(formAddRequestDraft)
-  // Submit
   const [formAddRequestSubmit, setFormAddRequestSubmit] = useState({
     BranchId: null,
     RequestNo: null,
@@ -161,16 +103,53 @@ const CreateReqPurchase = () => {
     IsApprove3: null,
     Descriptions: null,
   })
-
-  // GET REQUEST FROM REQNO
-
   const [dataReqNo, setDataReqNo] = useState({})
   const [formEditDescReqNo, setFormEditDescReqNo] = useState({})
   const [idEditDesc, setIdEditDesc] = useState()
-  console.log(formEditDescReqNo)
+  const [quantity, setQuantity] = useState(0)
+  const [formAddRequestDraft, setFormAddRequestDraft] = useState({
+    BranchId: null,
+    RequestNo: null,
+    RequestTypeId: 5,
+    CreatedDate: null,
+    FinishDate: null,
+    RequestStatusId: 1,
+    UserApprove1Id: null,
+    UserApprove2Id: null,
+    UserApprove3Id: null,
+    IsApprove1: null,
+    IsApprove2: null,
+    IsApprove3: null,
+    Descriptions: null,
+  })
 
-  const btnGetReqNo = () => {
-    getDataByReqNo(generateReqNo, (res) => {
+  const [branchId, setBranchId] = useState()
+  const [formBranch, setFormBranch] = useState({})
+  const [formEditSRBranch, setFormEditSRBranch] = useState('')
+  const [vendorSearch, setVendorSearch] = useState([])
+  const generateReqNo = generateCodeAssets(formReqNo)
+  const [formAddAsset, setFormAddAsset] = useState({
+    RequestNo: generateReqNo,
+    CategoryId: null,
+    BrandId: null,
+    Type: null,
+    BranchId: null,
+    DivisionId: null,
+    UserAsset: null,
+    VendorId: null,
+    Descriptions: null,
+    DamageId: null,
+    Quantity: null,
+    Price: 0,
+  })
+  // Modal New Assets Request
+  const [newAR, setNewAR] = useState(false)
+  const [editDesc, setEditDesc] = useState(false)
+
+  // Initial HIT API
+
+  const getDataReqNo = (requestNo) => {
+    getDataByReqNo(requestNo, (res) => {
       setDataReqNo(res)
       setFormEditDescReqNo({
         BranchId: res.BranchId,
@@ -189,33 +168,48 @@ const CreateReqPurchase = () => {
       })
       setIdEditDesc(res.id)
     })
-    // localStorage.setItem('colapse', JSON.stringify({ colapse: true, createReqShow: true }))
-    // const lsColapse = JSON.parse(localStorage.getItem('colapse'))
-    // const dataColapse = lsColapse.colapse
-    // const dataCreateShow = lsColapse.createReqShow
+  }
 
-    // setColapse(dataColapse)
-    // setCreateReqShow(dataCreateShow)
+  const get = () => {
+    getAllBranch((res) => setBranch(res))
+    getAllCategory((res) => setCategory(res))
+    getAllBrand((res) => setBrand(res))
+    getAllDivision((res) => setDivision(res))
+
+    if (localStorage.getItem('requestNo')) {
+      getDataReqNo(localStorage.getItem('requestNo'))
+    }
+  }
+
+  useEffect(() => {
+    get()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Get REQUEST by REQNO DETAIL
+
+  const btnGetReqNoDetail = () => {
+    getDataByReqNoDetail(generateReqNo, (res) => {
+      setDataReqNoDetail(res)
+    })
+  }
+
+  const btnUserApprove = (id) => {
+    // console.log(id)
+    getUserApprove1ByBranchId(id, (res) => setUserApprove1(res))
+    getUserApprove2ByBranchId(id, (res) => setUserApprove2(res))
+    getUserApprove3ByBranchId(id, (res) => setUserApprove3(res))
   }
 
   const btnEditdesc = () => {
     updateDataRequest(idEditDesc, formEditDescReqNo).then((res) => {
-      // console.log(res, 'Ini Log nya')
-      // if (res.isConfirmed) {
-      //   setEditDesc(false)
-      // } else {
-      //   setEditDesc(false)
-      // }
       setEditDesc(false)
+      getDataReqNo(dataReqNo?.requestNo)
     })
   }
 
   // Edit Seq No REQUEST
-  const [branchId, setBranchId] = useState()
 
-  const [formBranch, setFormBranch] = useState({})
-
-  const [formEditSRBranch, setFormEditSRBranch] = useState('')
   // console.log(formEditSRBranch)
 
   const btnEditBranch = (id) => {
@@ -233,25 +227,8 @@ const CreateReqPurchase = () => {
     })
   }
 
-  const [formAddAsset, setFormAddAsset] = useState({
-    RequestNo: generateReqNo,
-    CategoryId: null,
-    BrandId: null,
-    Type: null,
-    BranchId: null,
-    DivisionId: null,
-    UserAsset: null,
-    VendorId: null,
-    Descriptions: null,
-    DamageId: null,
-    Quantity: null,
-    Price: 0,
-  })
-
-  const navigate = useNavigate()
-
   //   GET VENDOR BY BRANCH ID
-  const [vendorSearch, setVendorSearch] = useState([])
+
   // console.log(vendorSearch)
 
   // const branchId = branchByCode.BranchId
@@ -259,8 +236,6 @@ const CreateReqPurchase = () => {
   const btnGetVendor = (id) => {
     getSearchVendor(id, (res) => setVendorSearch(res))
   }
-
-  const [quantity, setQuantity] = useState(0)
 
   const btnQuantityPlus = () => {
     setQuantity(quantity + 1)
@@ -300,16 +275,12 @@ const CreateReqPurchase = () => {
       IsApprove1: userApprove1 ? 0 : null,
       IsApprove2: userApprove2 ? 0 : null,
       IsApprove3: userApprove3 ? 0 : null,
+    }).then(() => {
+      localStorage.setItem('requestNo', generateCodeAssets(formReqNo))
+      getDataReqNo(generateCodeAssets(formReqNo))
     })
   }
 
-  // Modal New Assets Request
-  const [newAR, setNewAR] = useState(false)
-  const [createReqShow, setCreateReqShow] = useState(false)
-  const [colapse, setColapse] = useState(true)
-  console.log('Colapse : ', colapse)
-  console.log('Req Show : ', createReqShow)
-  const [editDesc, setEditDesc] = useState(false)
   return (
     <>
       <CRow>
@@ -317,7 +288,7 @@ const CreateReqPurchase = () => {
           <CCard className="mb-4">
             <CCardHeader className="fw-bold ">Create Request</CCardHeader>
             <CCardBody>
-              {createReqShow === false ? (
+              {!localStorage.getItem('requestNo') ? (
                 <CRow>
                   <CCol sm={8}>
                     {/* Choose Branch & Request Type*/}
@@ -377,15 +348,6 @@ const CreateReqPurchase = () => {
                                     .toString()
                                     .padStart(3, '0'),
                                 )
-
-                                // setFormEditSNBranch(
-                                //   (Number(JSON.parse(e.target.value).SeqNoAst) + 1)
-                                //     .toString()
-                                //     .padStart(3, '0'),
-                                // )
-                                // console.log(
-                                //   (Number(JSON.parse(e.target.value).SeqNo) + 1).toString().padStart(3, '0'),
-                                // )
                               }}
                             >
                               <option hidden>Choose...</option>
@@ -436,9 +398,6 @@ const CreateReqPurchase = () => {
                                 formAddRequestDraft.RequestTypeId === null
                                   ? inputNotComp()
                                   : (draftAdd(),
-                                    btnGetReqNo(),
-                                    setColapse(!colapse),
-                                    setCreateReqShow(!createReqShow),
                                     Swal.fire({
                                       // position: 'top-end',
                                       icon: 'success',
@@ -569,211 +528,206 @@ const CreateReqPurchase = () => {
               )}
 
               {/* COLLAPSE */}
-              <CCollapse visible={colapse}>
-                <CCard className="mt-2">
-                  <CCardHeader className="fw-bold">Purchase Detail</CCardHeader>
-                  <CCardBody>
-                    <div>
-                      {/* BUTTON ADD ASSETS */}
-                      <CButton
-                        color="info"
-                        className="mb-1 mt-1 text-light "
-                        onClick={() => {
-                          setNewAR(!newAR)
-                          // btnGetVendor(branchId)
-                        }}
-                      >
-                        <CIcon icon={cilPlus} className="me-2 " />
-                        New Assets Request
-                      </CButton>
-                    </div>
 
-                    <CTable align="middle" className=" mt-2 mb-0 border" striped small>
-                      {/* Table Header */}
-                      <CTableHead color="dark">
-                        <CTableRow>
-                          <CTableHeaderCell className="text-start">No</CTableHeaderCell>
-                          <CTableHeaderCell className="text-center">Assets</CTableHeaderCell>
-                          <CTableHeaderCell className="text-center">Detail</CTableHeaderCell>
-                          <CTableHeaderCell className="text-center">Branch</CTableHeaderCell>
-                          <CTableHeaderCell className="text-center">User</CTableHeaderCell>
+              <CCard className="mt-2">
+                <CCardHeader className="fw-bold">Purchase Detail</CCardHeader>
+                <CCardBody>
+                  <div>
+                    {/* BUTTON ADD ASSETS */}
+                    <CButton
+                      color="info"
+                      className="mb-1 mt-1 text-light "
+                      disabled={!localStorage.getItem('requestNo')}
+                      onClick={() => {
+                        setNewAR(!newAR)
+                        // btnGetVendor(branchId)
+                      }}
+                    >
+                      <CIcon icon={cilPlus} className="me-2 " />
+                      New Assets Request
+                    </CButton>
+                  </div>
 
-                          <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
-                        </CTableRow>
-                      </CTableHead>
+                  <CTable align="middle" className=" mt-2 mb-0 border" striped small>
+                    {/* Table Header */}
+                    <CTableHead color="dark">
+                      <CTableRow>
+                        <CTableHeaderCell className="text-start">No</CTableHeaderCell>
+                        <CTableHeaderCell className="text-center">Assets</CTableHeaderCell>
+                        <CTableHeaderCell className="text-center">Detail</CTableHeaderCell>
+                        <CTableHeaderCell className="text-center">Branch</CTableHeaderCell>
+                        <CTableHeaderCell className="text-center">User</CTableHeaderCell>
 
-                      {/* Table Body */}
+                        <CTableHeaderCell className="text-center">Actions</CTableHeaderCell>
+                      </CTableRow>
+                    </CTableHead>
 
-                      <CTableBody>
-                        {dataReqNoDetail.length === 0 ? (
-                          <div>No Data!</div>
-                        ) : (
-                          dataReqNoDetail.map((item, index) => (
-                            <CTableRow v-for="item in tableItems" key={item.id}>
-                              {/* NO */}
-                              <CTableDataCell className="text-start">{index + 1}.</CTableDataCell>
-                              {/* ASSET */}
-                              <CTableDataCell>
-                                {/* BRAND */}
-                                <div className="fw-bold ">
-                                  {item.brandName} |{/* TYPE */}
-                                  <span className="ms-1">{item.type}</span>
-                                </div>
-                                {/* CATEGORY */}
-                                <div>{item.categoryName}</div>
+                    {/* Table Body */}
 
-                                {/* Descriptions */}
-                                <div className="font-monospace text-muted small ">Description:</div>
-                                <div className="small me-5 ">
-                                  {/* {item.descriptions} */}
-                                  <AdvReadMoreMore
-                                    linesToShow={1}
-                                    text={item.descriptions}
-                                    checkFor={100}
-                                    readMoreText="read more.."
-                                    readLessText="read less.."
-                                  />
-                                </div>
-                              </CTableDataCell>
-                              {/* Detail */}
-                              <CTableDataCell>
+                    <CTableBody>
+                      {dataReqNoDetail.length === 0 ? (
+                        <div>No Data!</div>
+                      ) : (
+                        dataReqNoDetail.map((item, index) => (
+                          <CTableRow v-for="item in tableItems" key={item.id}>
+                            {/* NO */}
+                            <CTableDataCell className="text-start">{index + 1}.</CTableDataCell>
+                            {/* ASSET */}
+                            <CTableDataCell>
+                              {/* BRAND */}
+                              <div className="fw-bold ">
+                                {item.brandName} |{/* TYPE */}
+                                <span className="ms-1">{item.type}</span>
+                              </div>
+                              {/* CATEGORY */}
+                              <div>{item.categoryName}</div>
+
+                              {/* Descriptions */}
+                              <div className="font-monospace text-muted small ">Description:</div>
+                              <div className="small me-5 ">
+                                {/* {item.descriptions} */}
+                                <AdvReadMoreMore
+                                  linesToShow={1}
+                                  text={item.descriptions}
+                                  checkFor={100}
+                                  readMoreText="read more.."
+                                  readLessText="read less.."
+                                />
+                              </div>
+                            </CTableDataCell>
+                            {/* Detail */}
+                            <CTableDataCell>
+                              <div>
+                                {/* REQUEST NO */}
                                 <div>
-                                  {/* REQUEST NO */}
-                                  <div>
-                                    <div className="font-monospace text-muted small ">
-                                      Request No.:
-                                    </div>
-
-                                    <div>{item.requestNo}</div>
+                                  <div className="font-monospace text-muted small ">
+                                    Request No.:
                                   </div>
 
-                                  {/* Quantity - Price */}
-                                  <div>
-                                    <div className="font-monospace text-muted small ">
-                                      Quantity:
-                                    </div>
-
-                                    <div>
-                                      <span>{item.quantity} pcs</span>
-                                      <span> - </span>
-                                      <span>@</span>
-                                      <span>Rp. </span>
-                                      <span>{item.price}</span>
-                                    </div>
-                                  </div>
+                                  <div>{item.requestNo}</div>
                                 </div>
-                              </CTableDataCell>
-                              {/* Branch */}
-                              <CTableDataCell className="text-start">
-                                <div className="font-monospace text-muted small ">Branch:</div>
-                                <div className="fw-bold">{item.branchName}</div>
 
-                                <div className="font-monospace text-muted small ">Vendor:</div>
-                                <div>{item.vendorName}</div>
-                              </CTableDataCell>
-
-                              {/* User */}
-                              <CTableDataCell className="text-start">
+                                {/* Quantity - Price */}
                                 <div>
-                                  <div>
-                                    <div className="font-monospace text-muted small ">User:</div>
+                                  <div className="font-monospace text-muted small ">Quantity:</div>
 
-                                    <div>{item.userAsset}</div>
-                                    <div className="font-monospace text-muted small ">
-                                      Division:
-                                    </div>
-                                    <div>{item.divisionName}</div>
+                                  <div>
+                                    <span>{item.quantity} pcs</span>
+                                    <span> - </span>
+                                    <span>@</span>
+                                    <span>Rp. </span>
+                                    <span>{item.price}</span>
                                   </div>
                                 </div>
-                              </CTableDataCell>
-                              {/* ACTIONS */}
-                              <CTableDataCell className="text-center">
-                                {/* Delete */}
-                                <CButton
-                                  color="danger"
-                                  size="sm"
-                                  className="me-1 text-light"
-                                  onClick={() =>
-                                    Swal.fire({
-                                      title: 'Are you sure?',
-                                      text: "You won't be able to delete this!",
-                                      icon: 'warning',
-                                      showCancelButton: true,
-                                      confirmButtonColor: '#3085d6',
-                                      cancelButtonColor: '#d33',
-                                      confirmButtonText: 'Yes, delete it!',
-                                    }).then((result) => {
-                                      if (result.isConfirmed) {
-                                        // delete from axios
-                                        // deleteData(item.id)
-                                      }
-                                    })
-                                  }
-                                >
-                                  <CIcon icon={cilTrash} />
-                                </CButton>
+                              </div>
+                            </CTableDataCell>
+                            {/* Branch */}
+                            <CTableDataCell className="text-start">
+                              <div className="font-monospace text-muted small ">Branch:</div>
+                              <div className="fw-bold">{item.branchName}</div>
 
-                                <CButton
-                                  color="info"
-                                  size="sm"
-                                  className="text-light"
-                                  // onClick={() => (
-                                  //   setEditAR(!editAR),
-                                  //   btnEditCreateAsset(item.id),
-                                  //   btnGetVendor(branchId)
-                                  // )}
-                                >
-                                  <CIcon icon={cilPencil} />
-                                </CButton>
-                              </CTableDataCell>
-                            </CTableRow>
-                          ))
-                        )}
-                      </CTableBody>
-                    </CTable>
-                  </CCardBody>
-                </CCard>
-              </CCollapse>
+                              <div className="font-monospace text-muted small ">Vendor:</div>
+                              <div>{item.vendorName}</div>
+                            </CTableDataCell>
+
+                            {/* User */}
+                            <CTableDataCell className="text-start">
+                              <div>
+                                <div>
+                                  <div className="font-monospace text-muted small ">User:</div>
+
+                                  <div>{item.userAsset}</div>
+                                  <div className="font-monospace text-muted small ">Division:</div>
+                                  <div>{item.divisionName}</div>
+                                </div>
+                              </div>
+                            </CTableDataCell>
+                            {/* ACTIONS */}
+                            <CTableDataCell className="text-center">
+                              {/* Delete */}
+                              <CButton
+                                color="danger"
+                                size="sm"
+                                className="me-1 text-light"
+                                onClick={() =>
+                                  Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: "You won't be able to delete this!",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes, delete it!',
+                                  }).then((result) => {
+                                    if (result.isConfirmed) {
+                                      // delete from axios
+                                      // deleteData(item.id)
+                                    }
+                                  })
+                                }
+                              >
+                                <CIcon icon={cilTrash} />
+                              </CButton>
+
+                              <CButton
+                                color="info"
+                                size="sm"
+                                className="text-light"
+                                // onClick={() => (
+                                //   setEditAR(!editAR),
+                                //   btnEditCreateAsset(item.id),
+                                //   btnGetVendor(branchId)
+                                // )}
+                              >
+                                <CIcon icon={cilPencil} />
+                              </CButton>
+                            </CTableDataCell>
+                          </CTableRow>
+                        ))
+                      )}
+                    </CTableBody>
+                  </CTable>
+                </CCardBody>
+              </CCard>
             </CCardBody>
-            <CCollapse visible={colapse}>
-              <CCardFooter className="text-end">
-                {/* Draft */}
-                <CButton
-                  className="text-light me-2 "
-                  color="info"
-                  onClick={() => {
-                    if (
-                      formAddRequestDraft.BranchId === null ||
-                      formAddRequestDraft.RequestTypeId === null
-                    ) {
-                      inputNotComp()
-                    } else {
-                      draftAdd()
-                    }
-                  }}
-                >
-                  Draft
-                </CButton>
 
-                {/* SUBMIT */}
-                <CButton
-                  className="text-light "
-                  color="primary"
-                  onClick={() => {
-                    if (
-                      formAddRequestSubmit.BranchId === null ||
-                      formAddRequestSubmit.RequestTypeId === null
-                    ) {
-                      inputNotComp()
-                    } else {
-                      submitAdd()
-                    }
-                  }}
-                >
-                  Submit
-                </CButton>
-              </CCardFooter>
-            </CCollapse>
+            <CCardFooter className="text-end">
+              {/* Draft */}
+              <CButton
+                className="text-light me-2 "
+                color="info"
+                onClick={() => {
+                  if (
+                    formAddRequestDraft.BranchId === null ||
+                    formAddRequestDraft.RequestTypeId === null
+                  ) {
+                    inputNotComp()
+                  } else {
+                    draftAdd()
+                  }
+                }}
+              >
+                Draft
+              </CButton>
+
+              {/* SUBMIT */}
+              <CButton
+                className="text-light "
+                color="primary"
+                onClick={() => {
+                  if (
+                    formAddRequestSubmit.BranchId === null ||
+                    formAddRequestSubmit.RequestTypeId === null
+                  ) {
+                    inputNotComp()
+                  } else {
+                    submitAdd()
+                  }
+                }}
+              >
+                Submit
+              </CButton>
+            </CCardFooter>
           </CCard>
         </CCol>
       </CRow>
