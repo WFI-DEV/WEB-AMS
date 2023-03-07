@@ -137,6 +137,18 @@ const updateDataBranch = async (id, form) => {
   }
 }
 
+const updateDataBranchCreateReq = async (id, form) => {
+  try {
+    await axios({
+      method: 'PUT',
+      url: `${URL}/${id}`,
+      data: form,
+    })
+  } catch (err) {
+    console.log(err.response.data)
+  }
+}
+
 export {
   getDataMaxi,
   getAllBranch,
@@ -146,4 +158,5 @@ export {
   deleteData,
   importMaxi,
   getDataBranchByCode,
+  updateDataBranchCreateReq,
 }

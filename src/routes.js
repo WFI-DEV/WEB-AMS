@@ -5,7 +5,11 @@ const DashboardAdmin = React.lazy(() => import('./views/pages/admin/Dashboard'))
 
 // Request Admin Import
 const AllReqAdmin = React.lazy(() => import('./views/pages/admin/request/AllRequest'))
+const PurchaseReqAdmin = React.lazy(() => import('./views/pages/admin/request/PurchaseRequest'))
+const RepairReqAdmin = React.lazy(() => import('./views/pages/admin/request/RepairRequest'))
+
 const CreateReqPurchase = React.lazy(() => import('./views/pages/admin/request/CreateReqPurchase'))
+
 const ReqByIdPurchase = React.lazy(() => import('./views/pages/admin/request/RequestByIdPurchase'))
 const ReqByIdRepair = React.lazy(() => import('./views/pages/admin/request/RequestByIdRepair'))
 
@@ -30,9 +34,11 @@ const routesAdmin = [
   { path: '/dashboard', name: 'DashboardAdmin', element: DashboardAdmin },
 
   { path: '/request/allrequest', name: 'AllReqAdmin', element: AllReqAdmin },
+  { path: '/request/purchaserequest', name: 'PurchaseReqAdmin', element: PurchaseReqAdmin },
+  { path: '/request/repairrequest', name: 'RepairReqAdmin', element: RepairReqAdmin },
 
   {
-    path: '/request/create',
+    path: '/request/createpurchase',
     name: 'CreateReqPurchase',
     element: CreateReqPurchase,
   },

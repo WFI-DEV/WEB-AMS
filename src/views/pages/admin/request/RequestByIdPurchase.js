@@ -87,7 +87,7 @@ const RequestByIdPurchase = () => {
   // console.log(idSubmitReq)
 
   const [dataReqNo, setDataReqNo] = useState([])
-  console.log(dataReqNo)
+  // console.log(dataReqNo)
   useEffect(() => {
     getDataByReqNo(generateReqNo, (res) => {
       setDataReqNo(res)
@@ -164,14 +164,14 @@ const RequestByIdPurchase = () => {
       setQuantity(quantity - 1)
     }
   }
-
+  // console.log(branchId)
   // ADD NEW ASSET (REQUEST DETAIL )
   const [formAddAsset, setFormAddAsset] = useState({
     RequestNo: generateReqNo,
     CategoryId: null,
     BrandId: null,
     Type: null,
-    BranchId: dataReqNo.BranchId,
+    BranchId: null,
     DivisionId: null,
     UserAsset: null,
     VendorId: null,
@@ -181,7 +181,7 @@ const RequestByIdPurchase = () => {
     Price: 0,
   })
 
-  // console.log(formAddAsset)
+  console.log(formAddAsset)
 
   // Button CREATE ASSET
   const createAsset = () => {
@@ -243,14 +243,14 @@ const RequestByIdPurchase = () => {
   // Modal New Asset Request
   const [newAR, setNewAR] = useState(false)
   const [editAR, setEditAR] = useState(false)
-  const [editDesc, seteditDesc] = useState(false)
+  const [editDesc, setEditDesc] = useState(false)
 
   return (
     <>
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader className="fw-bold">Request Purchase</CCardHeader>
+            <CCardHeader className="fw-bold">Draft Purchase</CCardHeader>
             <CCardBody>
               <CRow>
                 <CCol sm={4}>
@@ -317,7 +317,7 @@ const RequestByIdPurchase = () => {
                           size="sm"
                           color="body"
                           className="text-dark"
-                          onClick={() => seteditDesc(!editDesc)}
+                          onClick={() => setEditDesc(!editDesc)}
                         >
                           <CIcon icon={cilPencil} />
                         </CButton>
@@ -737,10 +737,9 @@ const RequestByIdPurchase = () => {
           <CButton
             color="primary"
             onClick={() =>
-              formAddAsset.BranchId === null ||
+              branchId === null ||
               formAddAsset.BrandId === null ||
               formAddAsset.CategoryId === null ||
-              formAddAsset.DamageId === null ||
               formAddAsset.DivisionId === null ||
               formAddAsset.Price === 0 ||
               quantity === 0 ||
@@ -1012,12 +1011,12 @@ const RequestByIdPurchase = () => {
           </CButton>
         </CModalFooter>
       </CModal>
-
-      <CModal visible={editDesc} backdrop="static" onClose={() => seteditDesc(false)}>
+      {/* ############################## MODAL EDIT DESCRIPTION ################################### */}
+      <CModal visible={editDesc} backdrop="static" onClose={() => setEditDesc(false)}>
         <CModalHeader className="fw-bold">Edit Description</CModalHeader>
         <CModalBody>
           <CFormTextarea
-            placeholder={formASubmitReq.Descriptions}
+            value={formASubmitReq.Descriptions}
             onChange={(e) => setFormSubmitReq({ ...formASubmitReq, Descriptions: e.target.value })}
           />
         </CModalBody>

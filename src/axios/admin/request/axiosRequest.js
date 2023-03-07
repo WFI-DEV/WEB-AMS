@@ -17,6 +17,32 @@ const getAllRequest = async (callback) => {
   }
 }
 
+const getAllPurchaseRequest = async (callback) => {
+  try {
+    let allData = await axios({
+      method: 'GET',
+      url: `${URL}purchase`,
+    })
+    callback(allData.data.data)
+    // console.log(allData)
+  } catch (error) {
+    console.log(error.response.data)
+  }
+}
+
+const getAllRepairRequest = async (callback) => {
+  try {
+    let allData = await axios({
+      method: 'GET',
+      url: `${URL}repair`,
+    })
+    callback(allData.data.data)
+    // console.log(allData)
+  } catch (error) {
+    console.log(error.response.data)
+  }
+}
+
 const getDataById = async (id, cb) => {
   try {
     let dataById = await axios({
@@ -48,7 +74,7 @@ const addData = async (form) => {
       url: URL,
       data: form,
     })
-    Swal.fire('Create', 'Create Success', 'success')
+    // Swal.fire('Create', 'Create Success', 'success')
   } catch (err) {
     console.log(err.response.data)
   }
@@ -79,16 +105,19 @@ const updateDataRequest = async (id, form) => {
       url: `${URL}${id}`,
       data: form,
     })
-    Swal.fire('Update', 'Update Success', 'success').then((res) => {
-      if (res.isConfirmed) {
-        window.location.reload(true)
-      } else {
-        window.location.reload(true)
-      }
-    })
+    return Swal.fire('Update', 'Update Success', 'success')
   } catch (err) {
     console.log(err.response.data)
   }
 }
 
-export { getAllRequest, getDataById, addData, deleteData, updateDataRequest, getDataByReqNo }
+export {
+  getAllRequest,
+  getDataById,
+  addData,
+  deleteData,
+  updateDataRequest,
+  getDataByReqNo,
+  getAllPurchaseRequest,
+  getAllRepairRequest,
+}

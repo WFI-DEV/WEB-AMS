@@ -42,18 +42,18 @@ import {
   CTooltip,
 } from '@coreui/react'
 import {
-  getAllRequest,
+  getAllRepairRequest,
   updateDataRequest,
   getDataByReqNo,
 } from 'src/axios/admin/request/axiosRequest'
 import { AdvReadMoreMore } from 'read-more-more'
 import { getDataByReqNoDetail } from 'src/axios/admin/request/axiosRequestDetail'
 
-const AllRequest = () => {
+const RepairRequest = () => {
   // Get All Request
   const [request, setRequest] = useState([])
   useEffect(() => {
-    getAllRequest((res) => setRequest(res))
+    getAllRepairRequest((res) => setRequest(res))
   }, [])
   // console.log(request)
 
@@ -183,16 +183,16 @@ const AllRequest = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader className="fw-bold">All Request</CCardHeader>
+            <CCardHeader className="fw-bold">Repair Request</CCardHeader>
             <CCardBody>
               {/* + NEW  */}
               <CRow>
-                {/* <CCol>
+                <CCol>
                   <CButton color="primary" className="" onClick={() => createRPButton()}>
                     <CIcon icon={cilPlus} className="me-2" />
-                    Create Request
+                    Repair
                   </CButton>
-                </CCol> */}
+                </CCol>
                 {/* ---------------------------- FILTER ---------------------------- */}
 
                 <CForm className="row gy-2 gx-3 align-items-center  mb-2">
@@ -562,4 +562,4 @@ const AllRequest = () => {
   )
 }
 
-export default AllRequest
+export default RepairRequest
